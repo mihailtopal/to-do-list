@@ -1,0 +1,58 @@
+.error {
+  padding: 8px;
+  height: max-content;
+  position: absolute;
+  padding-left: 10px;
+  color: red;
+}
+.error:focus {
+  outline-color: red;
+}
+
+.form {
+  width: 360px;
+  padding-left: 10%;
+}
+
+.p-paginator-page {
+  font-weight: 500;
+}
+.captchaForm {
+  display: flex;
+  flex-direction: column;
+}
+.captchaForm img {
+  margin: auto;
+  max-width: 150px;
+}
+div .inputArea {
+  padding-left: 10px;
+  font-size: 15px;
+  height: 30px;
+  width: 90%;
+  margin: 5px 0px;
+  border-radius: 7px;
+  border: solid 1px grey;
+}
+
+.button button {
+  margin-right: 5%;
+  width: 90%;
+  margin-bottom: 5%;
+  margin-top: 5%;
+}
+.loginForm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+h2 {
+  text-align: center;
+}
+.checkbox {
+  padding: 10px 0px;
+}
+.checkbox label {
+  padding: 0px 10px;
+}
