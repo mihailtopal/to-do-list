@@ -94,7 +94,7 @@ export const todoAPI = createApi({
     >({
       query: ({ todolistId, taskId, body }) => ({
         url: `/todo-lists/${todolistId}/tasks/${taskId}`,
-        method: "POST",
+        method: "PUT",
         body: { ...body },
       }),
       invalidatesTags: () => [{ type: "Todo", id: "tasks" }],

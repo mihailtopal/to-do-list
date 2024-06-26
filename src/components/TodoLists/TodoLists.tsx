@@ -9,6 +9,7 @@ import TodoList from "./TodoList";
 import style from "./styles.module.css";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
+import { InputText } from "primereact/inputtext";
 
 const TodoLists = () => {
   const isAuth = authSelectors.GetIsAuth();
@@ -42,12 +43,14 @@ const TodoLists = () => {
   return (
     <div>
       <div className={style.head}>
-        <input
-          value={newListTitile}
-          placeholder="New To-do list"
-          onChange={onChangeNewTitle}
-        />
-        <Button onClick={onSetNewList}>Add new list</Button>
+        <div className="p-inputgroup flex-1">
+          <InputText
+            value={newListTitile}
+            placeholder="New To-do list"
+            onChange={onChangeNewTitle}
+          />
+          <Button onClick={() => onSetNewList()}>Add new list</Button>
+        </div>
       </div>
 
       <div className={style.todoLists}>{todoListsElements}</div>

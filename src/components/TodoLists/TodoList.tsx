@@ -5,6 +5,7 @@ import {
   useDeleteTodoListMutation,
   useGetTasksQuery,
   useSetNewTaskMutation,
+  useUpdateTaskMutation,
 } from "../../api/todoAPI";
 import Task from "./Task";
 import style from "./styles.module.css";
@@ -20,6 +21,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const { data: tasks } = useGetTasksQuery(id);
   const [deleteList] = useDeleteTodoListMutation();
   const [deleteTask] = useDeleteTaskMutation();
+  const [updateTask] = useUpdateTaskMutation();
   const [newTaskTitile, setNewTaskTitile] = useState<string>("");
   let dateObject = new Date(addedDate);
   const year = dateObject.getFullYear();
@@ -49,6 +51,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         addedDate={task.addedDate}
         completed={task.completed}
         deleteTaskHandler={deleteTaskHandler}
+        updateTask={updateTask}
       />
     );
   });

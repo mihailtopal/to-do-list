@@ -1,13 +1,35 @@
-import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
-import { ITaskItem } from "../../api/todoAPI";
+import { Checkbox } from "primereact/checkbox";
+import { ITaskItem, IUpdateTask } from "../../api/todoAPI";
 import { useState } from "react";
 import style from "./styles.module.css";
 import { classNames } from "primereact/utils";
+import { ConfirmDialog } from "primereact/confirmdialog";
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
+  updateTask: ({ todolistId, taskId, body }: IUpdateTask) => void;
 }
 const Task = (props: ITaskProps) => {
-  const [checked, setChecked] = useState<boolean | undefined>(false);
+  const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
+  const [checked, setCheked] = useState<boolean | undefined>(
+    props.status === 0 ? false : true
+  );
+  const updateTaskStatus = (checked: boolean | undefined) => {
+    props.updateTask({
+      todolistId: props.todoListId,
+      taskId: props.id,
+      body: {
+        title: props.title,
+        description: props.description as string,
+        completed: props.completed,
+        status: checked === true ? 1 : 0,
+        priority: props.priority,
+        startDate: props.startDate,
+        deadline: props.deadline,
+      },
+    });
+    setCheked(checked);
+  };
+
   return (
     <div>
       {/* <h3>
@@ -26,15 +48,27 @@ const Task = (props: ITaskProps) => {
           className={checked ? style.taskChekedTrue : style.taskChekedFalse}
         >
           <Checkbox
-            onChange={(e) => setChecked(e.checked)}
+            onChange={(e) => updateTaskStatus(e.checked)}
             checked={checked !== undefined ? checked : false}
           ></Checkbox>
-          <span>{props.title}</span>
+          <ConfirmDialog
+            visible={visibleDelete}
+            onHide={() => setVisibleDelete(false)}
+            message="Are you sure  want delete this task?"
+            accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
+          />
+          <span className={style.title}>{props.title}</span>
+          <button className={style.editButton}>edit</button>
         </span>
 
         <span
-          onClick={() => props.deleteTaskHandler(props.todoListId, props.id)}
-          className={classNames(style.deleteTask, "pi", "pi-delete-left")}
+          onClick={() => setVisibleDelete(true)}
+          className={classNames(
+            style.deleteTask,
+            style.icons,
+            "pi",
+            "pi-delete-left"
+          )}
         ></span>
       </h3>
       {/* <div> description={props.description}</div>
