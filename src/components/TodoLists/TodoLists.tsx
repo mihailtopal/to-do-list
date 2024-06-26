@@ -6,6 +6,9 @@ import {
 import { Navigate } from "react-router-dom";
 import { authSelectors } from "../../redux/selectors/authSelectors";
 import TodoList from "./TodoList";
+import style from "./styles.module.css";
+import { Card } from "primereact/card";
+import { Button } from "primereact/button";
 
 const TodoLists = () => {
   const isAuth = authSelectors.GetIsAuth();
@@ -22,28 +25,32 @@ const TodoLists = () => {
     setNewTodo(newListTitile);
     setNewListTitile("");
   };
-  const todoListsElements = todoLists?.map((tl) => {
-    debugger;
-    return (
-      <TodoList
-        key={tl.id}
-        id={tl.id}
-        title={tl.title}
-        addedDate={tl.addedDate}
-        order={tl.order}
-      />
-    );
-  });
+  const todoListsElements = todoLists
+    ?.filter((tl) => tl.order !== undefined && !isNaN(tl.order))
+    .sort((a, b) => b.order - a.order)
+    .map((tl) => {
+      return (
+        <TodoList
+          key={tl.id}
+          id={tl.id}
+          title={tl.title}
+          addedDate={tl.addedDate}
+          order={tl.order}
+        />
+      );
+    });
   return (
     <div>
-      <input
-        value={newListTitile}
-        placeholder="New To-do list"
-        onChange={onChangeNewTitle}
-      />
-      <button onClick={onSetNewList}>+</button>
+      <div className={style.head}>
+        <input
+          value={newListTitile}
+          placeholder="New To-do list"
+          onChange={onChangeNewTitle}
+        />
+        <Button onClick={onSetNewList}>Add new list</Button>
+      </div>
 
-      <div>{todoListsElements}</div>
+      <div className={style.todoLists}>{todoListsElements}</div>
     </div>
   );
 };

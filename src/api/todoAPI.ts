@@ -112,7 +112,7 @@ export const todoAPI = createApi({
     reorderTask: build.mutation<APIResponseType, IReorderTask>({
       query: ({ todolistId, taskId, putAfterItemId }) => ({
         url: `/todo-lists/${todolistId}/tasks/${taskId}/reorder`,
-        method: "DELETE",
+        method: "PUT",
         body: { putAfterItemId },
       }),
       invalidatesTags: () => [{ type: "Todo", id: "tasks" }],

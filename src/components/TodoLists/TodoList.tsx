@@ -7,6 +7,13 @@ import {
   useSetNewTaskMutation,
 } from "../../api/todoAPI";
 import Task from "./Task";
+import style from "./styles.module.css";
+import { Card } from "primereact/card";
+import { classNames } from "primereact/utils";
+import { ConfirmDialog } from "primereact/confirmdialog";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
 
 const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
@@ -21,7 +28,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const hours = dateObject.getHours().toString().padStart(2, "0");
   const minutes = dateObject.getMinutes().toString().padStart(2, "0");
   const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
-
+  const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
   };
@@ -50,27 +57,46 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   };
   const onSetNewTask = () => {
     setNewTask({ todolistId: id, title: newTaskTitile });
+
     setNewTaskTitile("");
   };
   return (
-    <div>
-      <h1>
-        To-do: {title}
-        <button onClick={() => deleteList(id)}>X</button>
-      </h1>
+    <div className={style.todoListItem}>
+      <ConfirmDialog
+        visible={visibleDelete}
+        onHide={() => setVisibleDelete(false)}
+        message="Are you sure  want delete this list?"
+        accept={() => deleteList(id)}
+      />
 
-      <div>id: {id}</div>
-      <div>addedDate: {formattedDate}</div>
-      <div>order: {order}</div>
-      <div>
-        <input
+      <div className="card flex justify-content-center"></div>
+      <div className={style.deleteListButton}>
+        <span
+          className={classNames(style.icons, style.iconTrash, "pi", "pi-trash")}
+          onClick={() => setVisibleDelete(true)}
+        ></span>
+      </div>
+
+      <Card title={title}>
+        <div>{formattedDate}</div>
+        <InputText
           value={newTaskTitile}
           placeholder="New task"
           onChange={onChangeNewTitle}
-        />
-        <button onClick={onSetNewTask}>+</button>
-      </div>
-      {tasksElements}
+        ></InputText>
+        <Button onClick={() => onSetNewTask()}>Add task</Button>
+        {/* <div>id: {id}</div> */}
+        {/* <div>order: {order}</div> */}
+        {/* <div>
+          <input
+            value={newTaskTitile}
+            placeholder="New task"
+            onChange={onChangeNewTitle}
+          />
+          <button onClick={onSetNewTask}>+</button>
+        </div> */}
+        {tasksElements}
+      </Card>
     </div>
   );
 };
