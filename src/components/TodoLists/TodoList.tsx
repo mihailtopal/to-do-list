@@ -15,6 +15,7 @@ import { ConfirmDialog } from "primereact/confirmdialog";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import EditTask from "./EditTask";
 
 const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
@@ -31,6 +32,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const minutes = dateObject.getMinutes().toString().padStart(2, "0");
   const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
+
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
   };

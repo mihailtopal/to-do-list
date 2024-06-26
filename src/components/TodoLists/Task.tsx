@@ -4,12 +4,15 @@ import { useState } from "react";
 import style from "./styles.module.css";
 import { classNames } from "primereact/utils";
 import { ConfirmDialog } from "primereact/confirmdialog";
+import EditTask from "./EditTask";
+
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
   updateTask: ({ todolistId, taskId, body }: IUpdateTask) => void;
 }
 const Task = (props: ITaskProps) => {
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
+  const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
   const [checked, setCheked] = useState<boolean | undefined>(
     props.status === 0 ? false : true
   );
@@ -57,8 +60,21 @@ const Task = (props: ITaskProps) => {
             message="Are you sure  want delete this task?"
             accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
           />
+          <EditTask
+            visible={visibleEdit}
+            setVisible={setVisibleEdit}
+            description={props.description}
+            title={props.title}
+            startDate={props.startDate}
+            deadline={props.deadline}
+          />
           <span className={style.title}>{props.title}</span>
-          <button className={style.editButton}>edit</button>
+          <button
+            onClick={() => setVisibleEdit(true)}
+            className={style.editButton}
+          >
+            edit
+          </button>
         </span>
 
         <span
