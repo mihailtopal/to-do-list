@@ -49,6 +49,7 @@
   font-size: 28px;
   opacity: 0.5;
 }
+
 .icons::after {
   font-size: 20px;
   width: max-content;
@@ -63,24 +64,38 @@
   padding: 0px 7px 7px 7px;
   z-index: 1000;
   opacity: 0; /* Изначально делаем элемент невидимым */
-  transition: opacity 0.7s ease; /* Добавляем переход для свойства opacity */
 }
 .icons:hover::after {
   opacity: 1;
 }
 .icons:hover {
   opacity: 1;
+  color: red;
 }
 .iconTrash::after {
   content: "Delete this list";
 }
-.iconPlus::after {
-  content: "Add new task";
+
+.taskCheked {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.taskChekedTrue {
+.taskCheked .taskChekedTrue {
   opacity: 0.5;
   text-decoration: line-through;
 }
-
+.taskCheked span span {
+  margin-left: 20px;
+}
 .taskChekedFalse {
+}
+.deleteTask {
+  font-size: 22px;
+  color: red;
+  opacity: 0.7;
+}
+.deleteTask:hover {
+  opacity: 1;
+  font-size: 25px;
 }

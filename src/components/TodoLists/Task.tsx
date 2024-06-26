@@ -2,6 +2,7 @@ import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 import { ITaskItem } from "../../api/todoAPI";
 import { useState } from "react";
 import style from "./styles.module.css";
+import { classNames } from "primereact/utils";
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
 }
@@ -20,13 +21,21 @@ const Task = (props: ITaskProps) => {
 
       {/* <div> id={props.id}</div> */}
 
-      <h3 className={checked ? style.taskChekedTrue : style.taskChekedFalse}>
-        <Checkbox
-          onChange={(e) => setChecked(e.checked)}
-          checked={checked !== undefined ? checked : false}
-        ></Checkbox>
+      <h3 className={style.taskCheked}>
+        <span
+          className={checked ? style.taskChekedTrue : style.taskChekedFalse}
+        >
+          <Checkbox
+            onChange={(e) => setChecked(e.checked)}
+            checked={checked !== undefined ? checked : false}
+          ></Checkbox>
+          <span>{props.title}</span>
+        </span>
 
-        {props.title}
+        <span
+          onClick={() => props.deleteTaskHandler(props.todoListId, props.id)}
+          className={classNames(style.deleteTask, "pi", "pi-delete-left")}
+        ></span>
       </h3>
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>

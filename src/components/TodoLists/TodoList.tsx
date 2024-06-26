@@ -79,12 +79,15 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
 
       <Card title={title}>
         <div>{formattedDate}</div>
-        <InputText
-          value={newTaskTitile}
-          placeholder="New task"
-          onChange={onChangeNewTitle}
-        ></InputText>
-        <Button onClick={() => onSetNewTask()}>Add task</Button>
+        <div className="p-inputgroup flex-1">
+          <InputText
+            value={newTaskTitile}
+            placeholder="New task"
+            onChange={onChangeNewTitle}
+          />
+          <Button onClick={() => onSetNewTask()}>Add task</Button>
+        </div>
+
         {/* <div>id: {id}</div> */}
         {/* <div>order: {order}</div> */}
         {/* <div>
