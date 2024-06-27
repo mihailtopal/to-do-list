@@ -20,8 +20,8 @@ export interface IUpdateTask {
     completed: boolean;
     status: number;
     priority: number;
-    startDate: null | string;
-    deadline: null | string;
+    startDate: Date | null | string;
+    deadline: Date | null | string;
   };
 }
 export interface IReorderTask {

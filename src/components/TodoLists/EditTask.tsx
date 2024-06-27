@@ -1,26 +1,27 @@
-import {
-  ErrorMessage,
-  Field,
-  Form,
-  Formik,
-  FormikErrors,
-  FormikHelpers,
-  useFormik,
-} from "formik";
-import { Button } from "primereact/button";
-import { ConfirmDialog } from "primereact/confirmdialog";
-import { Dialog } from "primereact/dialog";
-import { InputText } from "primereact/inputtext";
-import { FloatLabel } from "primereact/floatlabel";
+import { FormikErrors, FormikHelpers, useFormik } from "formik";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { useEffect } from "react";
+import EditForm from "./EditForm";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface IEditTaslProps {
+  updateTask: ({ description, title, startDate, deadline }: Values) => void;
   visible: boolean;
   setVisible: (arg: boolean) => void;
   description: string | null;
   title: string;
-  startDate: string | null;
-  deadline: string | null;
+  startDate: Date | string | null;
+  deadline: Date | string | null;
 }
+export type Values = Omit<
+  IEditTaslProps,
+  "visible" | "setVisible" | "updateTask"
+>;
+
 const EditTask = ({
   visible,
   setVisible,
@@ -28,85 +29,54 @@ const EditTask = ({
   title,
   startDate,
   deadline,
+  updateTask,
 }: IEditTaslProps) => {
-  const formik = useFormik({ initialValues: { title: "" } });
-
-  const onSubmit = (
-    { title }: any,
-    { setSubmitting, resetForm }: FormikHelpers<any>
-  ) => {
-    alert(title);
-    resetForm();
-    setSubmitting(false);
-  };
-
-  const validate = (values: any) => {
-    const errors: FormikErrors<any> = {};
-
+  const validate = (values: Values) => {
+    const errors: FormikErrors<Values> = {};
     return errors;
   };
+  const formik = useFormik<Values>({
+    initialValues: {
+      title: title,
+      description: description,
+      startDate: new Date(dayjs.utc(startDate).local().toString()),
+      deadline: new Date(dayjs.utc(deadline).local().toString()),
+    },
+    validate,
+    onSubmit: (
+      { title, description, startDate, deadline }: Values,
+      { setSubmitting, resetForm }: FormikHelpers<Values>
+    ) => {
+      updateTask({ title, description, startDate, deadline });
+      console.log(startDate);
+      setSubmitting(false);
+      setVisible(false);
+    },
+  });
+  useEffect(() => {
+    formik.resetForm({
+      values: {
+        title: title,
+        description: description,
+        startDate: startDate
+          ? new Date(dayjs.utc(startDate).local().toString())
+          : null,
+        deadline: deadline
+          ? new Date(dayjs.utc(deadline).local().toString())
+          : null,
+      },
+    });
+  }, [title, description, startDate, deadline]);
 
-  const inputArea = (label: string, value?: string) => (
-    <FloatLabel>
-      <InputText id={label} value={value} />
-      <label htmlFor={label}>{label}</label>
-    </FloatLabel>
-  );
   return (
-    <ConfirmDialog
+    <EditForm
+      handleChange={formik.handleChange}
+      areasKeys={formik.values}
       visible={visible}
-      onHide={() => {
-        setVisible(false);
-      }}
-      content={() => (
-        <div
-          style={{
-            borderRadius: "12px",
-            backgroundColor: "white",
-            padding: "20px",
-          }}
-        >
-          <Formik
-            initialValues={initialValues}
-            validate={validate}
-            onSubmit={onSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form>
-                <div>
-                  <Field
-                    component={() => inputArea("title")}
-                    type="input"
-                    name="title"
-                  />
-                  <ErrorMessage name="newMessageText" component="span" />
-                </div>
-                <div>
-                  <Field
-                    component="input"
-                    type="input"
-                    name="description"
-                    placeholder="Description"
-                  />
-                  <ErrorMessage name="newMessageText" component="span" />
-                </div>
-
-                <Button
-                  icon="pi pi-check"
-                  type="submit"
-                  disabled={isSubmitting}
-                >
-                  Add
-                </Button>
-                <Button severity="secondary" onClick={() => setVisible(false)}>
-                  Cancel
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      )}
-    ></ConfirmDialog>
+      setVisible={setVisible}
+      submit={formik.handleSubmit}
+      disabled={formik.isSubmitting}
+    />
   );
 };
 

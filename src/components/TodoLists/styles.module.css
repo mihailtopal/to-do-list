@@ -55,7 +55,7 @@
 
   position: absolute;
   bottom: 20px;
-  left: 35px;
+  left: -110px;
   color: #000000;
   border-radius: 5px;
   background-color: #ffffffe0;
@@ -74,6 +74,9 @@
 }
 .iconTrash::after {
   content: "Delete this list";
+}
+.iconEdit::after {
+  content: "Edit list";
 }
 .deleteTask::after {
   content: "Delete this task";
@@ -110,4 +113,26 @@
   margin: 0 0 0 10px;
   height: 20px;
   display: none;
+}
+.formInput {
+  width: 100%;
+}
+.form {
+  margin: 30px 0px;
+}
+.button {
+  display: flex;
+  justify-content: space-between;
+}
+.button button {
+  width: 45%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.formDialog {
+  border-radius: 5px;
+  background-color: white;
+  padding: 10px 30px;
+  min-width: 15%;
+  max-width: 100%;
 }

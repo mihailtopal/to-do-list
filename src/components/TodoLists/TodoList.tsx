@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import {
   ITodoList,
   useDeleteTaskMutation,
@@ -6,6 +6,7 @@ import {
   useGetTasksQuery,
   useSetNewTaskMutation,
   useUpdateTaskMutation,
+  useUpdateTodoListMutation,
 } from "../../api/todoAPI";
 import Task from "./Task";
 import style from "./styles.module.css";
@@ -13,9 +14,16 @@ import { Card } from "primereact/card";
 import { classNames } from "primereact/utils";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import EditTask from "./EditTask";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import EditForm from "./EditForm";
+import { FormikErrors, useFormik } from "formik";
+import { SplitButton } from "primereact/splitbutton";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
@@ -23,8 +31,9 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [deleteList] = useDeleteTodoListMutation();
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
+  const [updateList] = useUpdateTodoListMutation();
   const [newTaskTitile, setNewTaskTitile] = useState<string>("");
-  let dateObject = new Date(addedDate);
+  let dateObject = new Date(dayjs.utc(addedDate).local().toString());
   const year = dateObject.getFullYear();
   const month = (dateObject.getMonth() + 1).toString().padStart(2, "0");
   const day = dateObject.getDate().toString().padStart(2, "0");
@@ -32,10 +41,40 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const minutes = dateObject.getMinutes().toString().padStart(2, "0");
   const formattedDate = `${day}.${month}.${year} ${hours}:${minutes}`;
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
+  const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
 
+  const items = [
+    {
+      label: "Update",
+      icon: "pi pi-refresh",
+    },
+    {
+      label: "Delete",
+      icon: "pi pi-times",
+    },
+  ];
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
   };
+  const validate = (values: { title: string }) => {
+    const errors: FormikErrors<{ title: string }> = {};
+    if (values.title.length === 0) errors.title = "Title is !";
+    return errors;
+  };
+  const formik = useFormik({
+    initialValues: {
+      title: title,
+    },
+    validate,
+    onSubmit: ({ title }, { setSubmitting }) => {
+      updateList({
+        title,
+        todolistId: id,
+      });
+      setSubmitting(false);
+      setVisibleEdit(false);
+    },
+  });
 
   const tasksElements = tasks?.items.map((task) => {
     return (
@@ -73,9 +112,26 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         message="Are you sure  want delete this list?"
         accept={() => deleteList(id)}
       />
-
+      <EditForm
+        areasKeys={formik.values}
+        visible={visibleEdit}
+        setVisible={setVisibleEdit}
+        submit={formik.handleSubmit}
+        disabled={formik.isSubmitting}
+        handleChange={formik.handleChange}
+      />
       <div className="card flex justify-content-center"></div>
       <div className={style.deleteListButton}>
+        <SplitButton dropdownIcon="pi pi-cog" model={items} />
+        <span
+          className={classNames(
+            style.icons,
+            style.iconEdit,
+            "pi",
+            "pi-file-edit"
+          )}
+          onClick={() => setVisibleEdit(true)}
+        ></span>
         <span
           className={classNames(style.icons, style.iconTrash, "pi", "pi-trash")}
           onClick={() => setVisibleDelete(true)}
@@ -92,17 +148,6 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
           />
           <Button onClick={() => onSetNewTask()}>Add task</Button>
         </div>
-
-        {/* <div>id: {id}</div> */}
-        {/* <div>order: {order}</div> */}
-        {/* <div>
-          <input
-            value={newTaskTitile}
-            placeholder="New task"
-            onChange={onChangeNewTitle}
-          />
-          <button onClick={onSetNewTask}>+</button>
-        </div> */}
         {tasksElements}
       </Card>
     </div>
