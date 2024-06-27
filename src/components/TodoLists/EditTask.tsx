@@ -45,7 +45,7 @@ const EditTask = ({
     validate,
     onSubmit: (
       { title, description, startDate, deadline }: Values,
-      { setSubmitting, resetForm }: FormikHelpers<Values>
+      { setSubmitting }: FormikHelpers<Values>
     ) => {
       updateTask({ title, description, startDate, deadline });
       console.log(startDate);
