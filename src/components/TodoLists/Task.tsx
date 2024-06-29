@@ -5,6 +5,7 @@ import style from "./styles.module.css";
 import { classNames } from "primereact/utils";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import EditTask, { Values } from "./EditTask";
+import DropdownButton from "../common/DropdownButton";
 
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
@@ -16,6 +17,24 @@ const Task = (props: ITaskProps) => {
   const [checked, setCheked] = useState<boolean | undefined>(
     props.status === 0 ? false : true
   );
+  const changeVisibleEdit = () => {
+    setVisibleEdit(!visibleEdit);
+  };
+  const changeVisibleDelete = () => {
+    setVisibleDelete(!visibleDelete);
+  };
+  const items = [
+    {
+      name: "Edit",
+      icon: "pi-file-edit",
+      function: changeVisibleEdit,
+    },
+    {
+      name: "Delete",
+      icon: "pi-trash",
+      function: changeVisibleDelete,
+    },
+  ];
   const propertiesObject = {
     todolistId: props.todoListId,
     taskId: props.id,
@@ -77,23 +96,15 @@ const Task = (props: ITaskProps) => {
             deadline={props.deadline}
           />
           <span className={style.title}>{props.title}</span>
-          <button
-            onClick={() => setVisibleEdit(true)}
-            className={style.editButton}
-          >
-            edit
-          </button>
         </span>
-
-        <span
-          onClick={() => setVisibleDelete(true)}
-          className={classNames(
-            style.deleteTask,
-            style.icons,
-            "pi",
-            "pi-delete-left"
-          )}
-        ></span>
+        <div>
+          <DropdownButton
+            className={style.taskMenu}
+            headIconsize="23px"
+            itemsArray={items}
+            headIcon={"pi-pen-to-square"}
+          />
+        </div>
       </h3>
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>

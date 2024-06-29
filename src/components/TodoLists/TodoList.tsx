@@ -128,9 +128,13 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         handleChange={formik.handleChange}
       />
       <div className="card flex justify-content-center"></div>
-      <DropdownButton itemsArray={items} headIcon={"pi-cog"} />
 
       <Card title={title}>
+        <DropdownButton
+          itemsArray={items}
+          headIcon="pi-cog"
+          className={style.listMenu}
+        />
         <div>{formattedDate}</div>
         <div className="p-inputgroup flex-1">
           <InputText

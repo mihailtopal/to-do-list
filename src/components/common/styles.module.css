@@ -1,7 +1,7 @@
 .editListButton {
   font-size: 26px;
-  right: 5%;
-  top: 5%;
+  right: 0%;
+  top: 0%;
   position: absolute;
 
   padding: 0px;
@@ -15,7 +15,6 @@
 }
 .icons {
   position: relative;
-  font-size: 28px;
   opacity: 1;
 }
 
@@ -25,5 +24,4 @@
 .icons:hover {
   opacity: 1;
   color: rgb(0, 0, 0);
-  font-size: 29px;
 }
