@@ -11,7 +11,7 @@ import {
 import Task from "./Task";
 import style from "./styles.module.css";
 import { Card } from "primereact/card";
-import { classNames } from "primereact/utils";
+
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
@@ -20,7 +20,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import EditForm from "./EditForm";
 import { FormikErrors, useFormik } from "formik";
-import { SplitButton } from "primereact/splitbutton";
+import DropdownButton from "../common/DropdownButton";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,16 +43,6 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
 
-  const items = [
-    {
-      label: "Update",
-      icon: "pi pi-refresh",
-    },
-    {
-      label: "Delete",
-      icon: "pi pi-times",
-    },
-  ];
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
   };
@@ -96,14 +86,31 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
       />
     );
   });
+  const changeVisibleEdit = () => {
+    setVisibleEdit(!visibleEdit);
+  };
+  const changeVisibleDelete = () => {
+    setVisibleDelete(!visibleDelete);
+  };
   const onChangeNewTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitile(e.currentTarget.value);
   };
   const onSetNewTask = () => {
     setNewTask({ todolistId: id, title: newTaskTitile });
-
     setNewTaskTitile("");
   };
+  const items = [
+    {
+      name: "Edit",
+      icon: "pi-file-edit",
+      function: changeVisibleEdit,
+    },
+    {
+      name: "Delete",
+      icon: "pi-trash",
+      function: changeVisibleDelete,
+    },
+  ];
   return (
     <div className={style.todoListItem}>
       <ConfirmDialog
@@ -121,22 +128,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         handleChange={formik.handleChange}
       />
       <div className="card flex justify-content-center"></div>
-      <div className={style.deleteListButton}>
-        <SplitButton dropdownIcon="pi pi-cog" model={items} />
-        <span
-          className={classNames(
-            style.icons,
-            style.iconEdit,
-            "pi",
-            "pi-file-edit"
-          )}
-          onClick={() => setVisibleEdit(true)}
-        ></span>
-        <span
-          className={classNames(style.icons, style.iconTrash, "pi", "pi-trash")}
-          onClick={() => setVisibleDelete(true)}
-        ></span>
-      </div>
+      <DropdownButton itemsArray={items} headIcon={"pi-cog"} />
 
       <Card title={title}>
         <div>{formattedDate}</div>

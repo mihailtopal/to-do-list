@@ -25,29 +25,6 @@
   display: flex;
   justify-content: center;
 }
-.deleteListButton {
-  right: 5px;
-  top: 5px;
-  position: absolute;
-
-  padding: 5px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.638);
-  color: rgba(0, 0, 0, 0.643);
-  display: none;
-}
-
-.todoListItem:hover .deleteListButton {
-  display: inline-block;
-  display: grid;
-  grid-auto-flow: column;
-  gap: 10px; /* Устанавливает одинаковое расстояние между иконками */
-}
-.icons {
-  position: relative;
-  font-size: 22px;
-  opacity: 0.5;
-}
 
 .icons::after {
   font-size: 20px;
@@ -64,14 +41,7 @@
   z-index: 1000;
   opacity: 0; /* Изначально делаем элемент невидимым */
 }
-.icons:hover::after {
-  opacity: 1;
-}
-.icons:hover {
-  opacity: 1;
-  color: red;
-  font-size: 25px;
-}
+
 .iconTrash::after {
   content: "Delete this list";
 }

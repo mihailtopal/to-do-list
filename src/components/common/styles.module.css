@@ -1,0 +1,29 @@
+.editListButton {
+  font-size: 26px;
+  right: 5%;
+  top: 5%;
+  position: absolute;
+
+  padding: 0px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.638);
+  color: rgba(0, 0, 0, 0.294);
+}
+
+.editListButton:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+.icons {
+  position: relative;
+  font-size: 28px;
+  opacity: 1;
+}
+
+.icons:hover::after {
+  opacity: 1;
+}
+.icons:hover {
+  opacity: 1;
+  color: rgb(0, 0, 0);
+  font-size: 29px;
+}

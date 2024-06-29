@@ -11,6 +11,7 @@
     "@types/node": "^16.18.98",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "antd": "^5.18.3",
     "dayjs": "^1.11.11",
     "formik": "^2.4.6",
     "prime-react": "^1.0.0",
