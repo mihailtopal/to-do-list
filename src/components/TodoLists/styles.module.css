@@ -5,18 +5,34 @@
   align-items: stretch;
   justify-content: center;
 }
-
+.listTitle {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 24px;
+  font-weight: 550;
+  padding-bottom: 20px;
+}
 .todoListItem {
-  box-shadow: 2px 3px 2px 1px rgba(0, 0, 0, 0.15);
+  background-color: white;
+
   border: solid 1px rgba(0, 0, 0, 0.15);
   height: max-content;
   position: relative;
   border-radius: 5px;
+  padding: 20px;
   margin: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  transition: ease-in-out 0.3s;
+}
+.todoListItem:hover {
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
+}
+.todoListItem:focus-within {
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.15);
 }
 .head {
   margin: auto;
@@ -25,7 +41,9 @@
   display: flex;
   justify-content: center;
 }
-
+.taskTitle:hover {
+  cursor: pointer;
+}
 .icons::after {
   font-size: 20px;
   width: max-content;
@@ -42,24 +60,20 @@
   opacity: 0; /* Изначально делаем элемент невидимым */
 }
 
-.iconTrash::after {
-  content: "Delete this list";
+.task {
+  position: relative;
+  height: 30px;
 }
-.iconEdit::after {
-  content: "Edit list";
-}
-.deleteTask::after {
-  content: "Delete this task";
-}
-
 .taskCheked {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
+  font-weight: 500;
 }
-.taskCheked:hover .editButton {
+.taskCheked:hover .taskMenu {
   display: inline-block;
+  transition: ease-in-out 0.5s;
 }
 .taskCheked .taskChekedTrue {
   opacity: 0.5;
@@ -68,25 +82,45 @@
 .taskCheked span span {
   margin-left: 20px;
 }
+
+.timeLeftProgress {
+  display: flex;
+  height: 5px;
+  width: 75%;
+  top: -19px;
+  left: 13%;
+}
+
+.task .miniTimer div div div {
+  font-size: 10px;
+  padding: 0px;
+  margin: 0px;
+}
+.task .miniTimer div span {
+  font-size: 10px;
+  padding: 0px;
+  margin: 0px;
+}
+.miniTimer {
+  top: 0px;
+  right: 13%;
+  display: none;
+  position: absolute;
+}
+.timeLeftProgress:hover + .miniTimer {
+  display: block;
+}
+
 .todoListItem .listMenu {
   top: 5%;
   right: 5%;
 }
-.taskMenu {
-  top: -15%;
+.taskCheked .taskMenu {
+  display: none;
+  top: -20%;
   right: 0%;
 }
 
-.deleteTask {
-  font-size: 22px;
-  color: red;
-  opacity: 0.7;
-}
-
-.deleteTask:hover {
-  opacity: 1;
-  font-size: 25px;
-}
 .editButton {
   margin: 0 0 0 10px;
   height: 20px;
@@ -113,4 +147,48 @@
   padding: 10px 30px;
   min-width: 15%;
   max-width: 100%;
+}
+.date {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.date div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.date div :first-child {
+  font-size: 30px;
+  padding: 0px 20px;
+}
+.date div :last-child {
+  font-size: 15px;
+}
+.date :last-child div {
+  opacity: 0.7;
+  font-weight: 100;
+}
+.date span {
+  font-size: 25px;
+  font-weight: 600;
+}
+.dateTablo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dateInfo div {
+  padding: 10px 0px;
+}
+.dateInfo {
+  padding-top: 20px;
+}
+.dateInfo span:first-child {
+  font-size: 20px;
+  font-weight: 700;
+}
+.dateInfo span:last-child {
+  font-size: 18px;
+  font-weight: 400;
 }

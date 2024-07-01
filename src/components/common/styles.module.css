@@ -16,6 +16,7 @@
 .icons {
   position: relative;
   opacity: 1;
+  transition: ease-in-out 0.5s;
 }
 
 .icons:hover::after {
@@ -23,5 +24,6 @@
 }
 .icons:hover {
   opacity: 1;
+  cursor: pointer;
   color: rgb(0, 0, 0);
 }

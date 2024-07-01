@@ -1,11 +1,20 @@
 import { Checkbox } from "primereact/checkbox";
-import { ITaskItem, IUpdateTask } from "../../api/todoAPI";
+import { ITaskItem, IUpdateTask } from "../../../api/todoAPI";
 import { useState } from "react";
-import style from "./styles.module.css";
-import { classNames } from "primereact/utils";
+import style from "../styles.module.css";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import EditTask, { Values } from "./EditTask";
-import DropdownButton from "../common/DropdownButton";
+import DropdownButton from "../../common/DropdownButton";
+import { Dialog } from "primereact/dialog";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
+import TaskInfo from "./TaskInfo";
+import TimeLeftLine from "./TimeLeftLine";
+import CountdownTimer from "./CountdownTimer";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
@@ -14,25 +23,26 @@ interface ITaskProps extends ITaskItem {
 const Task = (props: ITaskProps) => {
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
+  const [visibleInfo, setVisibleInfo] = useState<boolean>(false);
   const [checked, setCheked] = useState<boolean | undefined>(
     props.status === 0 ? false : true
   );
-  const changeVisibleEdit = () => {
-    setVisibleEdit(!visibleEdit);
-  };
-  const changeVisibleDelete = () => {
-    setVisibleDelete(!visibleDelete);
-  };
+
   const items = [
+    {
+      name: "Info",
+      icon: "pi-info-circle",
+      function: () => setVisibleInfo(true),
+    },
     {
       name: "Edit",
       icon: "pi-file-edit",
-      function: changeVisibleEdit,
+      function: () => setVisibleEdit(true),
     },
     {
       name: "Delete",
       icon: "pi-trash",
-      function: changeVisibleDelete,
+      function: () => setVisibleDelete(true),
     },
   ];
   const propertiesObject = {
@@ -71,7 +81,7 @@ const Task = (props: ITaskProps) => {
     });
   };
   return (
-    <div>
+    <div className={style.task}>
       <h3 className={style.taskCheked}>
         <span
           className={checked ? style.taskChekedTrue : style.taskChekedFalse}
@@ -95,17 +105,48 @@ const Task = (props: ITaskProps) => {
             startDate={props.startDate}
             deadline={props.deadline}
           />
-          <span className={style.title}>{props.title}</span>
+
+          <Dialog
+            header={props.title}
+            visible={visibleInfo}
+            style={{ width: "330px", maxWidth: "375px" }}
+            onHide={() => {
+              if (!visibleInfo) return;
+              setVisibleInfo(false);
+            }}
+          >
+            <TaskInfo
+              description={props.description}
+              deadline={props.deadline}
+              addedDate={props.addedDate}
+              startDate={props.startDate}
+            />
+          </Dialog>
+          <span
+            className={style.taskTitle}
+            onClick={() => setVisibleInfo(true)}
+          >
+            {props.title}
+          </span>
         </span>
+
         <div>
           <DropdownButton
             className={style.taskMenu}
             headIconsize="23px"
             itemsArray={items}
-            headIcon={"pi-pen-to-square"}
+            headIcon={"pi-bars"}
           />
         </div>
       </h3>
+      <div className={style.miniTimer}>
+        <CountdownTimer deadline={props.deadline} />
+      </div>
+
+      {checked || (
+        <TimeLeftLine deadline={props.deadline} startDate={props.startDate} />
+      )}
+
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>
       <div>order={props.order}</div>

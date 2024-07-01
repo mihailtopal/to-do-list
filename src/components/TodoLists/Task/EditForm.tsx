@@ -1,12 +1,11 @@
 import { Button } from "primereact/button";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import style from "./styles.module.css";
+import style from "../styles.module.css";
 import { FormEvent } from "react";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { InputTextarea } from "primereact/inputtextarea";
-import { Values } from "./EditTask";
 
 export interface IEditFormProps {
   areasKeys: { [key: string]: any };
