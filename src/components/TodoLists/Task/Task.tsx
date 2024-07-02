@@ -83,9 +83,7 @@ const Task = (props: ITaskProps) => {
   return (
     <div className={style.task}>
       <h3 className={style.taskCheked}>
-        <span
-          className={checked ? style.taskChekedTrue : style.taskChekedFalse}
-        >
+        <span>
           <Checkbox
             onChange={(e) => updateTaskStatus(e.checked)}
             checked={checked !== undefined ? checked : false}
@@ -123,10 +121,23 @@ const Task = (props: ITaskProps) => {
             />
           </Dialog>
           <span
-            className={style.taskTitle}
-            onClick={() => setVisibleInfo(true)}
+            className={
+              style.taskTitle + " " + (checked ? style.taskChekedTrue : "")
+            }
+            onClick={(e) => setVisibleInfo(true)}
           >
             {props.title}
+            {checked ||
+              (props.deadline !== null && (
+                <TimeLeftLine
+                  deadline={props.deadline}
+                  startDate={props.startDate}
+                  addedDate={props.addedDate}
+                />
+              ))}
+            <div className={style.miniTimer}>
+              <CountdownTimer deadline={props.deadline} />
+            </div>
           </span>
         </span>
 
@@ -139,13 +150,6 @@ const Task = (props: ITaskProps) => {
           />
         </div>
       </h3>
-      <div className={style.miniTimer}>
-        <CountdownTimer deadline={props.deadline} />
-      </div>
-
-      {checked || (
-        <TimeLeftLine deadline={props.deadline} startDate={props.startDate} />
-      )}
 
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>

@@ -11,14 +11,15 @@ dayjs.extend(relativeTime);
 interface ITimeLeftLine {
   deadline: string | null;
   startDate: string | null;
+  addedDate: string | null;
 }
-const TimeLeftLine = ({ startDate, deadline }: ITimeLeftLine) => {
+const TimeLeftLine = ({ startDate, deadline, addedDate }: ITimeLeftLine) => {
   const dayjsDeadline = dayjs(deadline);
-  const dayjsStartDate = dayjs(startDate);
+  const dayjsStartDate =
+    startDate !== null ? dayjs(startDate) : dayjs(addedDate);
   const dayjsNow = dayjs();
   const diffDeadAndNow = dayjsDeadline.diff(dayjsNow);
   const diffStartAndDead = dayjsDeadline.diff(dayjsStartDate);
-  debugger;
   let percent = (diffDeadAndNow / diffStartAndDead) * 100;
   if (percent < 0) percent = 0;
   if (dayjsStartDate > dayjsNow) percent = 100;

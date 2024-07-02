@@ -27,11 +27,18 @@ const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
   return (
     <div className={style.dateTablo}>
       <div className={style.date}>
-        <div>
-          <div>{differenceDuration.days()}</div>
-          <div>Days</div>
-        </div>
-        <span>:</span>
+        {differenceDuration.days() === 0 ? (
+          ""
+        ) : (
+          <>
+            <div>
+              <div>{differenceDuration.days()}</div>
+              <div>Days</div>
+            </div>
+            <span>:</span>
+          </>
+        )}
+
         <div>
           <div>{differenceDuration.hours()}</div>
           <div>Hours</div>
