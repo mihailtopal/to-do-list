@@ -27,7 +27,7 @@ export interface IUpdateTask {
 export interface IReorderTask {
   todolistId: string;
   taskId: string;
-  putAfterItemId: string;
+  putAfterItemId: string | null;
 }
 
 export interface ITaskItem {
@@ -115,7 +115,6 @@ export const todoAPI = createApi({
         method: "PUT",
         body: { putAfterItemId },
       }),
-      invalidatesTags: () => [{ type: "Todo", id: "tasks" }],
     }),
     updateTodoList: build.mutation<APIResponseType, IPostData>({
       query: ({ title, todolistId }) => ({

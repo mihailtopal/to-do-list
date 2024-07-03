@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  ITaskItem,
   useDeleteTaskMutation,
   useGetTasksQuery,
+  useReorderTaskMutation,
   useUpdateTaskMutation,
 } from "../../../api/todoAPI";
 import Task from "../Task/Task";
@@ -11,7 +13,7 @@ const Tasks = ({ listId }: { listId: string }) => {
   const { data: tasksFromAPI } = useGetTasksQuery(listId);
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
-
+  const [reorderTask] = useReorderTaskMutation();
   const [tasks, setTasks] = useState(tasksFromAPI?.items);
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
@@ -19,7 +21,18 @@ const Tasks = ({ listId }: { listId: string }) => {
   useEffect(() => {
     setTasks(tasksFromAPI?.items);
   }, [tasksFromAPI]);
-
+  const reorder = (
+    currentTask: ITaskItem,
+    beforeTask: ITaskItem | undefined
+  ) => {
+    const thisTaskId = currentTask.id;
+    const beforeTaskId = beforeTask?.id || null;
+    reorderTask({
+      todolistId: listId,
+      taskId: thisTaskId,
+      putAfterItemId: beforeTaskId,
+    });
+  };
   return (
     <Reorder.Group
       as="ol"
@@ -29,8 +42,9 @@ const Tasks = ({ listId }: { listId: string }) => {
         paddingInlineStart: "0",
       }}
     >
-      {tasks?.map((task) => (
+      {tasks?.map((task, index, array) => (
         <Reorder.Item
+          onDragEnd={() => reorder(task, array[index - 1])}
           whileDrag={{
             scale: 1.05,
           }}
