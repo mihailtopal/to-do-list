@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   ITodoList,
   useDeleteTaskMutation,
@@ -19,23 +19,17 @@ import { FormikErrors, useFormik } from "formik";
 import DropdownButton from "../common/DropdownButton";
 import FormattedDate from "../common/FormattedDate";
 import { Dialog } from "primereact/dialog";
+import Tasks from "./Task/Tasks";
 
 const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
-  const { data: tasks } = useGetTasksQuery(id);
   const [deleteList] = useDeleteTodoListMutation();
-  const [deleteTask] = useDeleteTaskMutation();
-  const [updateTask] = useUpdateTaskMutation();
   const [updateList] = useUpdateTodoListMutation();
   const [newTaskTitile, setNewTaskTitile] = useState<string>("");
-
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
   const [visibleInfo, setVisibleInfo] = useState<boolean>(false);
 
-  const deleteTaskHandler = (todolistId: string, taskId: string) => {
-    deleteTask({ todolistId: todolistId, taskId: taskId });
-  };
   const validate = (values: { title: string }) => {
     const errors: FormikErrors<{ title: string }> = {};
     if (values.title.length === 0) errors.title = "Title is !";
@@ -56,26 +50,6 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
     },
   });
 
-  const tasksElements = tasks?.items.map((task) => {
-    return (
-      <Task
-        key={task.id}
-        id={task.id}
-        title={task.title}
-        description={task.description}
-        todoListId={task.todoListId}
-        order={task.order}
-        status={task.status}
-        priority={task.priority}
-        startDate={task.startDate}
-        deadline={task.deadline}
-        addedDate={task.addedDate}
-        completed={task.completed}
-        deleteTaskHandler={deleteTaskHandler}
-        updateTask={updateTask}
-      />
-    );
-  });
   const changeVisibleEdit = () => {
     setVisibleEdit(!visibleEdit);
   };
@@ -159,7 +133,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
           />
           <Button onClick={() => onSetNewTask()}>Add task</Button>
         </div>
-        {tasksElements}
+        <Tasks listId={id} />
       </div>
     </div>
   );

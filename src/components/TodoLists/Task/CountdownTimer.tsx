@@ -14,8 +14,10 @@ interface ICountdownTimerProps {
 const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
   const dayjsDate1 = dayjs(deadline);
   const [now, setNow] = useState<dayjs.Dayjs>();
-  const differenceInMilliseconds = dayjsDate1.diff(now);
+  let differenceInMilliseconds = dayjsDate1.diff(now);
+  if (differenceInMilliseconds < 0) differenceInMilliseconds = 0;
   const differenceDuration = dayjs.duration(differenceInMilliseconds);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setNow(dayjs());

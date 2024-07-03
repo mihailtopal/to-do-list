@@ -64,7 +64,10 @@
 }
 
 .task {
-  position: relative;
+  background-color: rgb(255 255 255);
+
+  padding-left: 10px;
+  border: 0.5px solid rgb(230 232 237 / 25%);
 }
 .taskCheked {
   display: flex;
@@ -72,6 +75,7 @@
   align-items: center;
   position: relative;
   font-weight: 500;
+  margin: 5px 0px;
 }
 .taskCheked:hover .taskMenu {
   display: inline-block;
@@ -121,7 +125,7 @@
   padding: 2px;
 }
 .timeLeftProgress:hover + .miniTimer {
-  display: inline-block;
+  display: inline;
 }
 
 .todoListItem .listMenu {
