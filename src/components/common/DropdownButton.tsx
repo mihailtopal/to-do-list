@@ -55,7 +55,10 @@ const DropdownButton = ({
             arrow={{ pointAtCenter: true }}
           >
             <span
-              style={{ fontSize: headIconsize ? headIconsize : "28px" }}
+              style={{
+                fontSize: headIconsize ? headIconsize : "28px",
+                fontWeight: "800",
+              }}
               className={classNames(style.icons, "pi", headIcon)}
             ></span>
           </Dropdown>

@@ -1,12 +1,7 @@
 .editListButton {
-  font-size: 26px;
-  right: 0%;
-  top: 0%;
-  position: absolute;
-
   padding: 0px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.638);
+  background-color: rgb(0 0 0 / 0%);
   color: rgba(0, 0, 0, 0.294);
 }
 

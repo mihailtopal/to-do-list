@@ -82,74 +82,76 @@ const Task = (props: ITaskProps) => {
   };
   return (
     <div className={style.task}>
-      <h3 className={style.taskCheked}>
-        <span>
-          <Checkbox
-            onChange={(e) => updateTaskStatus(e.checked)}
-            checked={checked !== undefined ? checked : false}
-          ></Checkbox>
-          <ConfirmDialog
-            visible={visibleDelete}
-            onHide={() => setVisibleDelete(false)}
-            message="Are you sure  want delete this task?"
-            accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
-          />
-          <EditTask
-            updateTask={updateTask}
-            visible={visibleEdit}
-            setVisible={setVisibleEdit}
-            description={props.description}
-            title={props.title}
-            startDate={props.startDate}
-            deadline={props.deadline}
-          />
+      <div className={style.taskCheked}>
+        <Checkbox
+          onChange={(e) => updateTaskStatus(e.checked)}
+          checked={checked !== undefined ? checked : false}
+        ></Checkbox>
+        <ConfirmDialog
+          visible={visibleDelete}
+          onHide={() => setVisibleDelete(false)}
+          message="Are you sure  want delete this task?"
+          accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
+        />
+        <EditTask
+          updateTask={updateTask}
+          visible={visibleEdit}
+          setVisible={setVisibleEdit}
+          description={props.description}
+          title={props.title}
+          startDate={props.startDate}
+          deadline={props.deadline}
+        />
 
-          <Dialog
-            header={props.title}
-            visible={visibleInfo}
-            style={{ width: "330px", maxWidth: "375px" }}
-            onHide={() => {
-              if (!visibleInfo) return;
-              setVisibleInfo(false);
-            }}
-          >
-            <TaskInfo
-              description={props.description}
-              deadline={props.deadline}
-              addedDate={props.addedDate}
-              startDate={props.startDate}
-            />
-          </Dialog>
-          <span
-            className={
-              style.taskTitle + " " + (checked ? style.taskChekedTrue : "")
-            }
-            onClick={(e) => setVisibleInfo(true)}
+        <Dialog
+          header={props.title}
+          visible={visibleInfo}
+          style={{ width: "330px", maxWidth: "375px" }}
+          onHide={() => {
+            if (!visibleInfo) return;
+            setVisibleInfo(false);
+          }}
+        >
+          <TaskInfo
+            description={props.description}
+            deadline={props.deadline}
+            addedDate={props.addedDate}
+            startDate={props.startDate}
+          />
+        </Dialog>
+        <div
+          className={
+            style.taskTitle + " " + (checked ? style.taskChekedTrue : "")
+          }
+        >
+          <div
+            style={{ paddingRight: "20px" }}
+            onClick={() => setVisibleInfo(true)}
           >
             {props.title}
-            {checked ||
-              (props.deadline !== null && (
-                <TimeLeftLine
-                  deadline={props.deadline}
-                  startDate={props.startDate}
-                  addedDate={props.addedDate}
-                />
-              ))}
-            <div className={style.miniTimer}>
-              <CountdownTimer deadline={props.deadline} />
-            </div>
-          </span>
-        </span>
+          </div>
 
-        <div>
-          <DropdownButton
-            className={style.taskMenu}
-            headIconsize="23px"
-            itemsArray={items}
-            headIcon={"pi-bars"}
-          />
+          <div>
+            <DropdownButton
+              className={style.taskMenu}
+              headIconsize="16px"
+              itemsArray={items}
+              headIcon={"pi-ellipsis-v"}
+            />
+          </div>
         </div>
-      </h3>
+        <div className={style.miniTimer}>
+          <CountdownTimer deadline={props.deadline} />
+          {checked ||
+            (props.deadline !== null && (
+              <TimeLeftLine
+                deadline={props.deadline}
+                startDate={props.startDate}
+                addedDate={props.addedDate}
+              />
+            ))}
+        </div>
+      </div>
 
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>

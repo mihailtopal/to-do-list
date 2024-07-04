@@ -10,15 +10,21 @@ import style from "./styles.module.css";
 import { Card } from "primereact/card";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import { Reorder } from "framer-motion";
 
 const TodoLists = () => {
   const isAuth = authSelectors.GetIsAuth();
   const [setNewTodo] = useSetNewTodoMutation();
-  const { data: todoLists } = useGetAllTodoListsQuery();
+  const { data: todoListsFromAPI } = useGetAllTodoListsQuery();
+  const [todoLists, setTodoLists] = useState(todoListsFromAPI);
   const [newListTitile, setNewListTitile] = useState<string>("");
+  useEffect(() => {
+    setTodoLists(todoListsFromAPI);
+  }, [todoListsFromAPI]);
   if (!isAuth) {
     return <Navigate to="/login" />;
   }
+
   const onChangeNewTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setNewListTitile(e.currentTarget.value);
   };
@@ -26,20 +32,7 @@ const TodoLists = () => {
     setNewTodo(newListTitile);
     setNewListTitile("");
   };
-  const todoListsElements = todoLists
-    ?.filter((tl) => tl.order !== undefined && !isNaN(tl.order))
-    .sort((a, b) => b.order - a.order)
-    .map((tl) => {
-      return (
-        <TodoList
-          key={tl.id}
-          id={tl.id}
-          title={tl.title}
-          addedDate={tl.addedDate}
-          order={tl.order}
-        />
-      );
-    });
+
   return (
     <div>
       <div className={style.head}>
@@ -53,7 +46,21 @@ const TodoLists = () => {
         </div>
       </div>
 
-      <div className={style.todoLists}>{todoListsElements}</div>
+      <div className={style.todoLists}>
+        {todoLists
+          ?.filter((list) => list.order !== undefined && !isNaN(list.order))
+          .map((list, index, array) => {
+            return (
+              <TodoList
+                key={list.id}
+                id={list.id}
+                title={list.title}
+                addedDate={list.addedDate}
+                order={list.order}
+              />
+            );
+          })}
+      </div>
     </div>
   );
 };

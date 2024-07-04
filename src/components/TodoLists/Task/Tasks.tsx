@@ -35,7 +35,6 @@ const Tasks = ({ listId }: { listId: string }) => {
   };
   return (
     <Reorder.Group
-      as="ol"
       values={tasks ? tasks : []}
       onReorder={setTasks}
       style={{
@@ -46,10 +45,10 @@ const Tasks = ({ listId }: { listId: string }) => {
         <Reorder.Item
           onDragEnd={() => reorder(task, array[index - 1])}
           whileDrag={{
-            scale: 1.05,
+            scale: 1.08,
           }}
           value={task}
-          key={task.order}
+          key={task.id}
           style={{ listStyleType: "none", padding: "0", marginBlockStart: "0" }}
         >
           <Task

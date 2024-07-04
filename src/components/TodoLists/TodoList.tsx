@@ -20,6 +20,8 @@ import DropdownButton from "../common/DropdownButton";
 import FormattedDate from "../common/FormattedDate";
 import { Dialog } from "primereact/dialog";
 import Tasks from "./Task/Tasks";
+import { IconField } from "primereact/iconfield";
+import { InputIcon } from "primereact/inputicon";
 
 const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
@@ -91,14 +93,14 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         message="Are you sure  want delete this list?"
         accept={() => deleteList(id)}
       />
-      <EditForm
+      {/* <EditForm
         areasKeys={formik.values}
         visible={visibleEdit}
         setVisible={setVisibleEdit}
         submit={formik.handleSubmit}
         disabled={formik.isSubmitting}
         handleChange={formik.handleChange}
-      />
+      /> */}
       <Dialog
         header={title}
         visible={visibleInfo}
@@ -117,24 +119,51 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
       </Dialog>
       <div className="card flex justify-content-center"></div>
 
-      <div>
-        <div className={style.listTitle}>{title}</div>
+      <div className={style.listTitle}>
+        <div onClick={() => setVisibleEdit(true)}>
+          {visibleEdit ? (
+            <IconField iconPosition="right" style={{ width: "310px" }}>
+              <InputIcon
+                disabled={formik.isSubmitting}
+                className="pi pi-check"
+                onClick={() => formik.handleSubmit()}
+              />
+
+              <InputText
+                id="title"
+                name="title"
+                style={{ width: "100%", borderRadius: "5px" }}
+                value={formik.values.title}
+                placeholder="List Title"
+                onChange={formik.handleChange}
+              />
+            </IconField>
+          ) : (
+            <span>{title}</span>
+          )}
+        </div>
         <DropdownButton
+          headIconsize="16px"
           itemsArray={items}
-          headIcon="pi-cog"
+          headIcon="pi-ellipsis-v"
           className={style.listMenu}
         />
-
-        <div className="p-inputgroup flex-1">
-          <InputText
-            value={newTaskTitile}
-            placeholder="New task"
-            onChange={onChangeNewTitle}
-          />
-          <Button onClick={() => onSetNewTask()}>Add task</Button>
-        </div>
-        <Tasks listId={id} />
       </div>
+
+      <Tasks listId={id} />
+      <IconField>
+        <InputIcon
+          className="pi pi-plus"
+          onClick={() => onSetNewTask()}
+        ></InputIcon>
+        <InputText
+          style={{ width: "100%", borderRadius: "5px" }}
+          v-model="value1"
+          value={newTaskTitile}
+          placeholder="New task"
+          onChange={onChangeNewTitle}
+        />
+      </IconField>
     </div>
   );
 };

@@ -32,7 +32,7 @@ const TimeLeftLine = ({ startDate, deadline, addedDate }: ITimeLeftLine) => {
   return (
     <>
       <Progress
-        steps={16}
+        steps={15}
         strokeColor={pickColor(percent)}
         strokeWidth={3}
         percent={percent}
