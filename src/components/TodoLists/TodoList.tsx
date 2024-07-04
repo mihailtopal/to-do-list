@@ -1,11 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import {
   ITodoList,
-  useDeleteTaskMutation,
   useDeleteTodoListMutation,
-  useGetTasksQuery,
   useSetNewTaskMutation,
-  useUpdateTaskMutation,
   useUpdateTodoListMutation,
 } from "../../api/todoAPI";
 import Task from "./Task/Task";
