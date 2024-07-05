@@ -1,8 +1,16 @@
 .todoLists {
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: stretch;
+  justify-content: center; */
+  width: 100vw;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 370px);
+  grid-auto-rows: 1px;
   justify-content: center;
 }
 .listTitle {
@@ -107,35 +115,28 @@
 .timeLeftProgress {
   position: absolute;
   display: flex;
-  width: 85%;
+  width: 269px;
   height: 10px;
 }
 
-.task .miniTimer div div div {
-  font-size: 10px;
-  padding: 0px;
-  margin: 0px;
-}
-.task .miniTimer div span {
-  font-size: 10px;
-  padding: 0px;
-  margin: 0px;
-}
 .miniTimer {
-  max-width: 133px;
-  border: 1px solid rgba(0, 0, 0, 0.187);
-  border-radius: 3px;
-  background-color: rgb(255, 255, 255);
-  bottom: 5%;
-  right: 13%;
-  display: none;
-  position: absolute;
-  padding: 2px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  font-size: 16px;
+  color: #a4a4a4;
+  display: flex;
 }
-.timeLeftProgress:hover + .miniTimer {
-  display: inline;
+.timeLeft span {
+  font-weight: 600;
+  color: #fc6565;
 }
-
+.timeLeft {
+  font-weight: 600;
+  color: #fc6565;
+}
+.clockItem {
+  margin-right: 10px;
+}
 .todoListItem .listMenu {
   top: 15px;
   right: 15px;

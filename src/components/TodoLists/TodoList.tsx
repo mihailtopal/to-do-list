@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import {
   ITodoList,
   useDeleteTodoListMutation,
@@ -28,7 +28,28 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
   const [visibleInfo, setVisibleInfo] = useState<boolean>(false);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
 
+  useEffect(() => {
+    if (elementRef.current) {
+      const resizeObserver = new ResizeObserver((entries) => {
+        if (elementRef.current) {
+          const elementHeight =
+            elementRef.current.getBoundingClientRect().height;
+          const numberOfRows = Math.round(elementHeight + 10);
+          setHeight(numberOfRows);
+        }
+      });
+
+      resizeObserver.observe(elementRef.current);
+
+      return () => {
+        resizeObserver.disconnect();
+      };
+    }
+  }, []);
+  console.log(height);
   const validate = (values: { title: string }) => {
     const errors: FormikErrors<{ title: string }> = {};
     if (values.title.length === 0) errors.title = "Title is !";
@@ -83,7 +104,11 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
     },
   ];
   return (
-    <div className={style.todoListItem}>
+    <div
+      className={style.todoListItem}
+      ref={elementRef}
+      style={{ gridRowEnd: `span ${height}` }}
+    >
       <ConfirmDialog
         visible={visibleDelete}
         onHide={() => setVisibleDelete(false)}
@@ -121,6 +146,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
           {visibleEdit ? (
             <IconField iconPosition="right" style={{ width: "310px" }}>
               <InputIcon
+                style={{ color: "#6FCAA9" }}
                 disabled={formik.isSubmitting}
                 className="pi pi-check"
                 onClick={() => formik.handleSubmit()}
@@ -129,31 +155,43 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
               <InputText
                 id="title"
                 name="title"
-                style={{ width: "100%", borderRadius: "5px" }}
+                style={{
+                  width: "100%",
+                  borderRadius: "5px",
+                  fontFamily: "Inter Tight, sans-serif",
+                  fontWeight: "550",
+                  fontSize: "18px",
+                }}
                 value={formik.values.title}
                 placeholder="List Title"
                 onChange={formik.handleChange}
+                autoFocus={true}
+                onBlur={() => setVisibleEdit(false)}
               />
             </IconField>
           ) : (
             <span>{title}</span>
           )}
         </div>
-        <DropdownButton
-          headIconsize="16px"
-          itemsArray={items}
-          headIcon="pi-ellipsis-v"
-          className={style.listMenu}
-        />
+        {visibleEdit || (
+          <DropdownButton
+            headIconsize="16px"
+            itemsArray={items}
+            headIcon="pi-ellipsis-v"
+            className={style.listMenu}
+          />
+        )}
       </div>
 
       <Tasks listId={id} />
       <IconField>
         <InputIcon
+          type="submit"
           className="pi pi-plus"
           onClick={() => onSetNewTask()}
         ></InputIcon>
         <InputText
+          onKeyDown={(e) => e.code === "Enter" && onSetNewTask()}
           style={{ width: "100%", borderRadius: "5px" }}
           v-model="value1"
           value={newTaskTitile}

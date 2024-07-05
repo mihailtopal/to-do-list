@@ -14,9 +14,11 @@ interface ITimeLeftLine {
   addedDate: string | null;
 }
 const TimeLeftLine = ({ startDate, deadline, addedDate }: ITimeLeftLine) => {
-  const dayjsDeadline = dayjs(deadline);
+  const dayjsDeadline = dayjs.utc(deadline).local();
   const dayjsStartDate =
-    startDate !== null ? dayjs(startDate) : dayjs(addedDate);
+    startDate !== null
+      ? dayjs.utc(startDate).local()
+      : dayjs.utc(addedDate).local();
   const dayjsNow = dayjs();
   const diffDeadAndNow = dayjsDeadline.diff(dayjsNow);
   const diffStartAndDead = dayjsDeadline.diff(dayjsStartDate);
@@ -24,17 +26,16 @@ const TimeLeftLine = ({ startDate, deadline, addedDate }: ITimeLeftLine) => {
   if (percent < 0) percent = 0;
   if (dayjsStartDate > dayjsNow) percent = 100;
   const pickColor = (percent: number) => {
-    if (percent < 30) return "#e32636";
-    else if (percent < 80) return "#ffe58f";
-    else return "#8db600";
+    if (percent < 30) return "#FC6565";
+    else if (percent < 80) return "#FCC865";
+    else return "#6FCAA9";
   };
 
   return (
     <>
       <Progress
-        steps={15}
         strokeColor={pickColor(percent)}
-        strokeWidth={3}
+        strokeWidth={4}
         percent={percent}
         showInfo={false}
         className={style.timeLeftProgress}

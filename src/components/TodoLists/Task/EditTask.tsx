@@ -48,7 +48,7 @@ const EditTask = ({
       { setSubmitting }: FormikHelpers<Values>
     ) => {
       updateTask({ title, description, startDate, deadline });
-      console.log(startDate);
+
       setSubmitting(false);
       setVisible(false);
     },

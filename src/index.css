@@ -29,3 +29,8 @@ code {
 .pi .pi-check {
   color: red;
 }
+.p-checkbox .p-checkbox-box {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+}

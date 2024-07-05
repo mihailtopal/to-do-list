@@ -49,6 +49,7 @@ const DropdownButton = ({
       <Space direction="vertical">
         <Space wrap>
           <Dropdown
+            overlayStyle={{ fontFamily: "Inter Tight, sans-serif" }}
             menu={menuProps}
             trigger={["click"]}
             placement="bottomLeft"

@@ -12,6 +12,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import TaskInfo from "./TaskInfo";
 import TimeLeftLine from "./TimeLeftLine";
 import CountdownTimer from "./CountdownTimer";
+import Timer from "./Timer";
+import { classNames } from "primereact/utils";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -140,19 +142,17 @@ const Task = (props: ITaskProps) => {
             />
           </div>
         </div>
-        <div className={style.miniTimer}>
-          <CountdownTimer deadline={props.deadline} />
-          {checked ||
-            (props.deadline !== null && (
-              <TimeLeftLine
-                deadline={props.deadline}
-                startDate={props.startDate}
-                addedDate={props.addedDate}
-              />
-            ))}
-        </div>
       </div>
-
+      {checked || (
+        <>
+          <Timer deadline={props.deadline} />
+          <TimeLeftLine
+            deadline={props.deadline}
+            startDate={props.startDate}
+            addedDate={props.addedDate}
+          />
+        </>
+      )}
       {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>
       <div>order={props.order}</div>

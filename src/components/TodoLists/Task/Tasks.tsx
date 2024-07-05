@@ -45,7 +45,9 @@ const Tasks = ({ listId }: { listId: string }) => {
         <Reorder.Item
           onDragEnd={() => reorder(task, array[index - 1])}
           whileDrag={{
+            borderRadius: "4px",
             scale: 1.08,
+            boxShadow: "0px 0px 10px 5px rgba(0, 0, 0, 0.15)",
           }}
           value={task}
           key={task.id}
