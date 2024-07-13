@@ -78,19 +78,23 @@ const EditForm = ({
       }}
       content={() => (
         <div className={style.formDialog}>
+          <span
+            onClick={() => setVisible(false)}
+            className="pi pi-times"
+          ></span>
           <form onSubmit={submit} autoComplete="off">
             {inputArea}
-            <div className={style.button}>
-              <Button icon="pi pi-check" type="submit" disabled={disabled}>
-                Add
+            <div className={style.confirmbutton}>
+              <Button type="submit" disabled={disabled}>
+                Confirm changes
               </Button>
-              <Button
+              {/* <Button
                 type="button"
                 severity="secondary"
                 onClick={() => setVisible(false)}
               >
                 Cancel
-              </Button>
+              </Button> */}
             </div>
           </form>
         </div>

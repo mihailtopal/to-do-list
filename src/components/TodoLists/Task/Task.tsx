@@ -108,17 +108,19 @@ const Task = (props: ITaskProps) => {
         <Dialog
           header={props.title}
           visible={visibleInfo}
-          style={{ width: "330px", maxWidth: "375px" }}
+          style={{ width: "360px", maxWidth: "375px", borderRadius: "10px" }}
           onHide={() => {
             if (!visibleInfo) return;
             setVisibleInfo(false);
           }}
         >
           <TaskInfo
+            status={props.status}
             description={props.description}
             deadline={props.deadline}
             addedDate={props.addedDate}
             startDate={props.startDate}
+            setVisibleEdit={setVisibleEdit}
           />
         </Dialog>
         <div

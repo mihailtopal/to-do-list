@@ -9,9 +9,13 @@ dayjs.extend(relativeTime);
 
 interface ICountdownTimerProps {
   deadline: string | null;
+  getTimeToDeadline?: (time: number) => void;
 }
 
-const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
+const CountdownTimer = ({
+  deadline,
+  getTimeToDeadline,
+}: ICountdownTimerProps) => {
   const dayjsDate1 = dayjs.utc(deadline).local();
   const [now, setNow] = useState<dayjs.Dayjs>();
   let differenceInMilliseconds = dayjsDate1.diff(now);
@@ -21,11 +25,16 @@ const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
   useEffect(() => {
     const timer = setInterval(() => {
       setNow(dayjs());
+      if (getTimeToDeadline) getTimeToDeadline(differenceInMilliseconds);
     }, 1000);
     return () => {
       clearInterval(timer);
     };
   }, []);
+  const formattedDay = differenceDuration.days();
+  const formattedHour = differenceDuration.format("HH"); // Часы с ведущим нулем
+  const formattedMinute = differenceDuration.format("mm"); // Минуты с ведущим нулем
+  const formattedSecond = differenceDuration.format("ss"); // Секунды с ведущим нулем
   return (
     <div className={style.dateTablo}>
       <div className={style.date}>
@@ -34,7 +43,7 @@ const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
         ) : (
           <>
             <div>
-              <div>{differenceDuration.days()}</div>
+              <div>{formattedDay}</div>
               <div>Days</div>
             </div>
             <span>:</span>
@@ -42,17 +51,17 @@ const CountdownTimer = ({ deadline }: ICountdownTimerProps) => {
         )}
 
         <div>
-          <div>{differenceDuration.hours()}</div>
+          <div>{formattedHour}</div>
           <div>Hours</div>
         </div>
         <span>:</span>
         <div>
-          <div>{differenceDuration.minutes()}</div>
+          <div>{formattedMinute}</div>
           <div>Minutes</div>
         </div>
         <span>:</span>
         <div>
-          <div>{differenceDuration.seconds()}</div>
+          <div>{formattedSecond}</div>
           <div>Seconds</div>
         </div>
       </div>

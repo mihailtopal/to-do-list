@@ -7,11 +7,12 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "Inter Tight", sans-serif;
 }
 .p-dialog-title {
+  color: #000000;
   font-size: 30px;
+  font-family: "Inter Tight", sans-serif;
 }
 .p-inputgroup {
   margin: auto;
@@ -33,4 +34,37 @@ code {
   margin-top: 3px;
   width: 16px;
   height: 16px;
+}
+.p-component-overlay {
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0);
+}
+.p-component-overlay-enter {
+  animation: none;
+}
+.p-dialog .p-dialog-header .p-dialog-header-icon {
+  margin-top: 10px;
+  width: 16px;
+  height: 16px;
+  font-size: 30px;
+}
+.p-dialog {
+  border-radius: 10px;
+}
+.p-dialog-header {
+  padding: 30px;
+  border-radius: 10px;
+}
+.p-dialog-content {
+  padding: 30px;
+  padding-top: 0px;
+  border-radius: 10px;
+}
+.p-inputtext {
+  padding: 16px;
+  border: 1px solid #dedede;
+  border-radius: 10px;
+}
+.pi-plus {
+  margin-right: 10px;
 }

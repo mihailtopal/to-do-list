@@ -4,6 +4,9 @@ import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import CountdownTimer from "./CountdownTimer";
 import FormattedDate from "../../common/FormattedDate";
+import TimeLeftLine from "./TimeLeftLine";
+import { useState } from "react";
+import { Button } from "primereact/button";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -13,6 +16,8 @@ interface ITaskInfoProps {
   deadline: string | null;
   addedDate: string | null;
   startDate: string | null;
+  status: number;
+  setVisibleEdit: (arg: boolean) => void;
 }
 
 const TaskInfo = ({
@@ -20,36 +25,118 @@ const TaskInfo = ({
   deadline,
   addedDate,
   startDate,
+  status,
+  setVisibleEdit,
 }: ITaskInfoProps) => {
-  const NotSet = () => <span>not been set yet.</span>;
+  const NotSet = () => (
+    <span className={style.notSetTime}>Time is not set</span>
+  );
+  const shortDescription =
+    description?.length && description?.length > 100
+      ? description?.slice(0, 100) + "..."
+      : description;
+  const [currentDescription, setCurrentDescription] =
+    useState(shortDescription);
+  const [collapseButtonTitle, setCollapseButtonTitle] =
+    useState("Expand description");
+  const [isExpand, setIsExpand] = useState(false);
+  const [timeToDeadlineMs, setTimeToDeadlineMs] = useState(0);
+  const getTimeToDeadline = (time: number) => {
+    setTimeToDeadlineMs(time);
+  };
+
+  const changeCollapseDescription = () => {
+    setIsExpand((prev) => !prev);
+    setCurrentDescription(isExpand ? shortDescription : description);
+    setCollapseButtonTitle(
+      isExpand ? "Expand description" : "Collapse description"
+    );
+  };
   return (
-    <div>
-      <h3>
-        Description: <span>{description ? "" : <NotSet />}</span>
-      </h3>
-      {description || ""}
-      {deadline === null ? (
-        <h3>The deadline has not been set yet.</h3>
-      ) : (
-        <>
-          <h3>The deadline is in: </h3>
-          <CountdownTimer deadline={deadline} />
-        </>
-      )}
-      <div className={style.dateInfo}>
+    <div className={style.dateInfo}>
+      <div className={style.dateTop}>
         <div>
-          <span>Added:{"  "}</span>
-          {addedDate === null ? <NotSet /> : <FormattedDate date={addedDate} />}
+          <div>Status </div>
+
+          <div>Added </div>
+
+          <div>Start </div>
+
+          <div>End </div>
         </div>
         <div>
-          <span>Start:{"  "}</span>
-          {startDate === null ? <NotSet /> : <FormattedDate date={startDate} />}
-        </div>
-        <div>
-          <span>End:{"  "}</span>
-          {deadline === null ? <NotSet /> : <FormattedDate date={deadline} />}
+          <div>{status ? "Done" : "In Progress"}</div>
+          <div>
+            {addedDate === null ? (
+              <NotSet />
+            ) : (
+              <FormattedDate date={addedDate} />
+            )}
+          </div>
+          <div>
+            {startDate === null ? (
+              <NotSet />
+            ) : (
+              <FormattedDate date={startDate} />
+            )}
+          </div>
+          <div>
+            {deadline === null ? <NotSet /> : <FormattedDate date={deadline} />}
+          </div>
         </div>
       </div>
+      <div className={style.description}>
+        <div>Description</div>
+        <div>{currentDescription || "Add a description..."}</div>
+        {description?.length && description?.length > 100 && (
+          <button onClick={() => changeCollapseDescription()}>
+            {collapseButtonTitle}
+          </button>
+        )}
+      </div>
+
+      {deadline === null ? (
+        <div>
+          <NotSet />
+        </div>
+      ) : (
+        <div>
+          {timeToDeadlineMs ? (
+            <div className={style.dateBottom}>
+              <h3>Due in:</h3>
+
+              <TimeLeftLine
+                deadline={deadline}
+                startDate={startDate}
+                addedDate={addedDate}
+              />
+              <CountdownTimer
+                deadline={deadline}
+                getTimeToDeadline={getTimeToDeadline}
+              />
+            </div>
+          ) : (
+            <div className={style.dateBottomTimeLeft}>
+              <h3>Time left</h3>
+              <TimeLeftLine
+                deadline={deadline}
+                startDate={startDate}
+                addedDate={addedDate}
+              />
+              <CountdownTimer
+                deadline={deadline}
+                getTimeToDeadline={getTimeToDeadline}
+              />
+            </div>
+          )}
+        </div>
+      )}
+      <Button
+        onClick={() => setVisibleEdit(true)}
+        className={style.editInfoDialogButton}
+      >
+        Edit
+      </Button>
     </div>
   );
 };
