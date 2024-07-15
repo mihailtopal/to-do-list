@@ -5,13 +5,9 @@ import {
   useSetNewTaskMutation,
   useUpdateTodoListMutation,
 } from "../../api/todoAPI";
-import Task from "./Task/Task";
-import style from "./styles.module.css";
-import { Card } from "primereact/card";
+import style from "./styles.module.scss";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import EditForm from "./Task/EditForm";
 import { FormikErrors, useFormik } from "formik";
 import DropdownButton from "../common/DropdownButton";
 import FormattedDate from "../common/FormattedDate";

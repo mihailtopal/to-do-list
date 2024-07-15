@@ -1,7 +1,7 @@
 import { Checkbox } from "primereact/checkbox";
 import { ITaskItem, IUpdateTask } from "../../../api/todoAPI";
 import { useState } from "react";
-import style from "../styles.module.css";
+import style from "../styles.module.scss";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import EditTask, { Values } from "./EditTask";
 import DropdownButton from "../../common/DropdownButton";
@@ -11,9 +11,7 @@ import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import TaskInfo from "./TaskInfo";
 import TimeLeftLine from "./TimeLeftLine";
-import CountdownTimer from "./CountdownTimer";
 import Timer from "./Timer";
-import { classNames } from "primereact/utils";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);

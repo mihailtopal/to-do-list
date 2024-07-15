@@ -1,6 +1,6 @@
 import { Progress } from "antd";
-import type { ProgressProps } from "antd";
-import style from "../styles.module.css";
+
+import style from "../styles.module.scss";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import {
   useGetAllTodoListsQuery,
   useSetNewTodoMutation,
@@ -6,11 +6,9 @@ import {
 import { Navigate } from "react-router-dom";
 import { authSelectors } from "../../redux/selectors/authSelectors";
 import TodoList from "./TodoList";
-import style from "./styles.module.css";
-import { Card } from "primereact/card";
+import style from "./styles.module.scss";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
-import { Reorder } from "framer-motion";
 
 const TodoLists = () => {
   const isAuth = authSelectors.GetIsAuth();

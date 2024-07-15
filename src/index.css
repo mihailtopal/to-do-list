@@ -16,7 +16,8 @@ code {
 }
 .p-inputgroup {
   margin: auto;
-  width: 310px;
+  width: 100%;
+  height: 56px;
 }
 .p-icon-field-right > .p-input-icon:last-of-type:hover {
   cursor: pointer;
@@ -61,7 +62,7 @@ code {
   border-radius: 10px;
 }
 .p-inputtext {
-  padding: 16px;
+  padding-left: 16px;
   border: 1px solid #dedede;
   border-radius: 10px;
 }

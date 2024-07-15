@@ -1,4 +1,4 @@
-import style from "../styles.module.css";
+import style from "../styles.module.scss";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -6,6 +6,7 @@ import { classNames } from "primereact/utils";
 import { useEffect, useState } from "react";
 
 dayjs.extend(duration);
+
 dayjs.extend(relativeTime);
 
 interface ITimerProps {
