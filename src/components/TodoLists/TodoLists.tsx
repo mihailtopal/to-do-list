@@ -1,21 +1,17 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import {
-  useGetAllTodoListsQuery,
-  useSetNewTodoMutation,
-} from "../../api/todoAPI";
+import { useEffect, useState } from "react";
+import { useGetAllTodoListsQuery } from "../../api/todoAPI";
 import { Navigate } from "react-router-dom";
 import { authSelectors } from "../../redux/selectors/authSelectors";
 import TodoList from "./TodoList";
 import style from "./styles.module.scss";
-import { Button } from "primereact/button";
-import { InputText } from "primereact/inputtext";
+import Header from "./Header";
 
 const TodoLists = () => {
   const isAuth = authSelectors.GetIsAuth();
-  const [setNewTodo] = useSetNewTodoMutation();
+
   const { data: todoListsFromAPI } = useGetAllTodoListsQuery();
   const [todoLists, setTodoLists] = useState(todoListsFromAPI);
-  const [newListTitile, setNewListTitile] = useState<string>("");
+
   useEffect(() => {
     setTodoLists(todoListsFromAPI);
   }, [todoListsFromAPI]);
@@ -23,27 +19,9 @@ const TodoLists = () => {
     return <Navigate to="/login" />;
   }
 
-  const onChangeNewTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewListTitile(e.currentTarget.value);
-  };
-  const onSetNewList = () => {
-    setNewTodo(newListTitile);
-    setNewListTitile("");
-  };
-
   return (
     <div>
-      <div className={style.head}>
-        <div className="p-inputgroup flex-1">
-          <InputText
-            value={newListTitile}
-            placeholder="New To-do list"
-            onChange={onChangeNewTitle}
-          />
-          <Button onClick={() => onSetNewList()}>Add new list</Button>
-        </div>
-      </div>
-
+      <Header />
       <div className={style.todoLists}>
         {todoLists
           ?.filter((list) => list.order !== undefined && !isNaN(list.order))
