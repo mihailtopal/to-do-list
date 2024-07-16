@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/to-do-list/static/css/main.ffc515f3.css",
+    "main.css": "/to-do-list/static/css/main.2ec4bf39.css",
     "main.js": "/to-do-list/static/js/main.995d75ea.js",
     "static/js/453.a50becb7.chunk.js": "/to-do-list/static/js/453.a50becb7.chunk.js",
     "static/media/primeicons.svg": "/to-do-list/static/media/primeicons.6ed59f962963a4a73af2.svg",
@@ -11,12 +11,12 @@
     "static/media/Rally_Logo.svg": "/to-do-list/static/media/Rally_Logo.31afa804d4e9b0b0837836e55f016f6d.svg",
     "index.html": "/to-do-list/index.html",
     "static/media/logoUser.svg": "/to-do-list/static/media/logoUser.e22d7d9489fba766743495cec6a200a3.svg",
-    "main.ffc515f3.css.map": "/to-do-list/static/css/main.ffc515f3.css.map",
+    "main.2ec4bf39.css.map": "/to-do-list/static/css/main.2ec4bf39.css.map",
     "main.995d75ea.js.map": "/to-do-list/static/js/main.995d75ea.js.map",
     "453.a50becb7.chunk.js.map": "/to-do-list/static/js/453.a50becb7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ffc515f3.css",
+    "static/css/main.2ec4bf39.css",
     "static/js/main.995d75ea.js"
   ]
 }
