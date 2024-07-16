@@ -45,7 +45,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
       };
     }
   }, []);
-  console.log(height);
+
   const validate = (values: { title: string }) => {
     const errors: FormikErrors<{ title: string }> = {};
     if (values.title.length === 0) errors.title = "Title is !";
@@ -57,6 +57,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
     },
     validate,
     onSubmit: ({ title }, { setSubmitting }) => {
+      debugger;
       updateList({
         title,
         todolistId: id,
@@ -140,7 +141,15 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
       <div className={style.listTitle}>
         <div onClick={() => setVisibleEdit(true)}>
           {visibleEdit ? (
-            <IconField iconPosition="right" style={{ width: "310px" }}>
+            <IconField
+              iconPosition="right"
+              style={{ width: "310px" }}
+              onBlur={() =>
+                setTimeout(() => {
+                  setVisibleEdit(false);
+                }, 100)
+              }
+            >
               <InputIcon
                 style={{ color: "#6FCAA9" }}
                 disabled={formik.isSubmitting}
@@ -162,7 +171,6 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
                 placeholder="List Title"
                 onChange={formik.handleChange}
                 autoFocus={true}
-                onBlur={() => setVisibleEdit(false)}
               />
             </IconField>
           ) : (

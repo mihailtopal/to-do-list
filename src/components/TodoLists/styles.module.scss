@@ -18,6 +18,7 @@ $font-family: "Inter Tight", sans-serif;
     grid-area: inputGroup;
     display: flex;
     max-width: 767px;
+    justify-content: space-evenly;
   }
   .logo img {
     margin-right: 20px;
@@ -78,7 +79,7 @@ $font-family: "Inter Tight", sans-serif;
     font-weight: 500;
     font-size: 20px;
     color: #fff;
-    margin-left: 15px;
+
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -89,6 +90,8 @@ $font-family: "Inter Tight", sans-serif;
       padding-left: 6px;
     }
     @media (max-width: 500px) {
+      margin-left: 15px;
+
       font-size: 16px;
       width: 30%;
     }
@@ -129,7 +132,6 @@ $font-family: "Inter Tight", sans-serif;
 }
 
 .listTitle {
-  height: 16px;
   display: flex;
   justify-content: space-between;
   font-family: $font-family;
