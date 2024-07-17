@@ -40,14 +40,12 @@ const errorsSlice = createSlice({
     builder.addMatcher(
       authAPI.endpoints.getCaptcha.matchFulfilled,
       (state, { payload }) => {
-        debugger;
         if (payload) state.captchaUrl = payload.url;
       }
     );
     builder.addMatcher(
       authAPI.endpoints.logIn.matchFulfilled,
       (state, { payload }) => {
-        debugger;
         if (payload.resultCode !== ResultCodesEnum.Success) {
           state.authErrors = payload.messages;
         } else if (payload.resultCode === ResultCodesEnum.Success) {

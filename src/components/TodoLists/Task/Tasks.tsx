@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ITaskItem,
   useDeleteTaskMutation,
@@ -9,7 +9,7 @@ import {
 import Task from "../Task/Task";
 import { Reorder } from "framer-motion";
 
-const Tasks = ({ listId }: { listId: string }) => {
+const Tasks = React.memo(({ listId }: { listId: string }) => {
   const { data: tasksFromAPI } = useGetTasksQuery(listId);
   const [deleteTask] = useDeleteTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
@@ -33,6 +33,7 @@ const Tasks = ({ listId }: { listId: string }) => {
       putAfterItemId: beforeTaskId,
     });
   };
+  console.log("RErender tasks", listId);
   return (
     <Reorder.Group
       values={tasks ? tasks : []}
@@ -73,6 +74,6 @@ const Tasks = ({ listId }: { listId: string }) => {
       ))}
     </Reorder.Group>
   );
-};
+});
 
 export default Tasks;

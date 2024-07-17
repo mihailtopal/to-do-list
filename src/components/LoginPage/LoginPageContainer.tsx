@@ -30,7 +30,7 @@ export interface ILoginFormValues extends ILoginData {
 const LoginPageContainer = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [logIn] = useLogInMutation();
+  const [logIn, data] = useLogInMutation();
   const { data: captchaUrl } = useGetCaptchaQuery();
 
   const validate = (values: ILoginFormValues) => {
@@ -44,7 +44,12 @@ const LoginPageContainer = () => {
       errors.password = "Enter password";
     }
     if (authErrorApi.length > 0) {
-      errors.email = authErrorApi[0];
+      if (
+        Array.isArray(authErrorApi) &&
+        authErrorApi.some((el) => el.includes("anti-bot"))
+      ) {
+        errors.captcha = authErrorApi[0];
+      } else errors.email = authErrorApi[0];
     }
     dispatch(clearApiErrors());
     return errors;
@@ -73,6 +78,7 @@ const LoginPageContainer = () => {
   });
   const isAuth = authSelectors.GetIsAuth();
   const authErrorApi = authSelectors.GetAuthErrorApi();
+
   useEffect(() => {
     if (isAuth) {
       debugger;
@@ -124,10 +130,10 @@ const LoginPageContainer = () => {
                 />
               </div>
 
-              {captchaUrl && (
+              {data.data?.messages.some((el) => el.includes("anti-bot")) && (
                 <div className={style.loginInputElement}>
                   <div className={style.captcha}>
-                    <img src={captchaUrl.url} alt="captcha" />
+                    <img src={captchaUrl?.url} alt="captcha" />
                   </div>
                   <FloatLabel>
                     <InputText

@@ -15,6 +15,7 @@ $font-family: "Inter Tight", sans-serif;
   align-items: center;
   justify-content: space-around;
   .inputGroupHeader {
+    position: relative;
     grid-area: inputGroup;
     display: flex;
     max-width: 767px;
@@ -52,6 +53,7 @@ $font-family: "Inter Tight", sans-serif;
       }
     }
   }
+
   @media (max-width: 900px) {
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto;
@@ -101,7 +103,12 @@ $font-family: "Inter Tight", sans-serif;
       }
     }
   }
-
+  .todoListError {
+    display: none;
+    top: 56px;
+    position: absolute;
+    left: 10px;
+  }
   input {
     width: 60%;
     height: 56px;
@@ -112,6 +119,12 @@ $font-family: "Inter Tight", sans-serif;
 
     &::placeholder {
       opacity: 0.3;
+    }
+    &:focus ~ .error.todoListError {
+      display: block;
+    }
+    &:focus.errorBorder {
+      border: 3px solid #fc6565;
     }
     @media (max-width: 500px) {
       width: 70%;
@@ -305,6 +318,7 @@ $font-family: "Inter Tight", sans-serif;
   padding-left: 20px;
   color: red;
 }
+
 .form {
   margin-top: 39px;
   flex-direction: column;
@@ -437,6 +451,9 @@ $font-family: "Inter Tight", sans-serif;
       font-weight: 500;
       color: #dedede;
       font-size: 15px;
+      div {
+        color: #dedede;
+      }
     }
   }
 

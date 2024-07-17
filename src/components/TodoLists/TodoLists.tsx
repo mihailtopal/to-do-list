@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGetAllTodoListsQuery } from "../../api/todoAPI";
 import { Navigate } from "react-router-dom";
 import { authSelectors } from "../../redux/selectors/authSelectors";
@@ -6,7 +6,7 @@ import TodoList from "./TodoList";
 import style from "./styles.module.scss";
 import Header from "./Header";
 
-const TodoLists = () => {
+const TodoLists = React.memo(() => {
   const isAuth = authSelectors.GetIsAuth();
 
   const { data: todoListsFromAPI } = useGetAllTodoListsQuery();
@@ -18,7 +18,7 @@ const TodoLists = () => {
   if (!isAuth) {
     return <Navigate to="/login" />;
   }
-
+  console.log("RErender all Lists");
   return (
     <div>
       <Header />
@@ -39,5 +39,5 @@ const TodoLists = () => {
       </div>
     </div>
   );
-};
+});
 export default TodoLists;

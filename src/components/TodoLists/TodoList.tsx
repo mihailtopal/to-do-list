@@ -15,12 +15,13 @@ import { Dialog } from "primereact/dialog";
 import Tasks from "./Task/Tasks";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
+import React from "react";
 
-const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
+const TodoList = React.memo(({ id, title, addedDate, order }: ITodoList) => {
   const [setNewTask] = useSetNewTaskMutation();
   const [deleteList] = useDeleteTodoListMutation();
   const [updateList] = useUpdateTodoListMutation();
-  const [newTaskTitile, setNewTaskTitile] = useState<string>("");
+
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
   const [visibleEdit, setVisibleEdit] = useState<boolean>(false);
   const [visibleInfo, setVisibleInfo] = useState<boolean>(false);
@@ -48,22 +49,26 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
 
   const validate = (values: { title: string }) => {
     const errors: FormikErrors<{ title: string }> = {};
-    if (values.title.length === 0) errors.title = "Title is !";
+    if (values.title.length === 0) errors.title = "Title required !";
+    else if (values.title.length > 30) errors.title = "Maximum 30 symbols";
     return errors;
   };
   const formik = useFormik({
     initialValues: {
       title: title,
+      newTaskTitile: "",
     },
     validate,
-    onSubmit: ({ title }, { setSubmitting }) => {
-      debugger;
-      updateList({
-        title,
-        todolistId: id,
-      });
+    onSubmit: ({ title, newTaskTitile }, { setSubmitting, resetForm }) => {
+      if (visibleEdit) {
+        updateList({
+          title,
+          todolistId: id,
+        });
+        setVisibleEdit(false);
+      } else setNewTask({ todolistId: id, title: newTaskTitile });
       setSubmitting(false);
-      setVisibleEdit(false);
+      resetForm();
     },
   });
 
@@ -76,13 +81,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
   const changeVisibleInfo = () => {
     setVisibleInfo(!visibleInfo);
   };
-  const onChangeNewTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewTaskTitile(e.currentTarget.value);
-  };
-  const onSetNewTask = () => {
-    setNewTask({ todolistId: id, title: newTaskTitile });
-    setNewTaskTitile("");
-  };
+
   const items = [
     {
       name: "Info",
@@ -100,6 +99,7 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
       function: changeVisibleDelete,
     },
   ];
+  console.log("RErender List", id);
   return (
     <div
       className={style.todoListItem}
@@ -192,19 +192,20 @@ const TodoList = ({ id, title, addedDate, order }: ITodoList) => {
         <InputIcon
           type="submit"
           className="pi pi-plus"
-          onClick={() => onSetNewTask()}
+          onClick={() => formik.handleSubmit()}
         ></InputIcon>
         <InputText
-          onKeyDown={(e) => e.code === "Enter" && onSetNewTask()}
+          id="newTaskTitile"
+          onKeyDown={(e) => e.code === "Enter" && formik.handleSubmit()}
           style={{ width: "100%", borderRadius: "5px" }}
           v-model="value1"
-          value={newTaskTitile}
+          value={formik.values.newTaskTitile}
           placeholder="New task"
-          onChange={onChangeNewTitle}
+          onChange={formik.handleChange}
         />
       </IconField>
     </div>
   );
-};
+});
 
 export default TodoList;

@@ -68,7 +68,9 @@ export const todoAPI = createApi({
     }),
     getTasks: build.query<ITasksResponse, string>({
       query: (todolistId) => `/todo-lists/${todolistId}/tasks`,
-      providesTags: () => [{ type: "Todo", id: "tasks" }],
+      providesTags: (result, error, todolistId) => [
+        { type: "Todo", id: `tasks-${todolistId}` },
+      ],
     }),
     setNewTodo: build.mutation<APIResponseType<{ item: ITodoList }>, string>({
       query: (title) => ({
@@ -85,7 +87,9 @@ export const todoAPI = createApi({
           method: "POST",
           body: { title },
         }),
-        invalidatesTags: () => [{ type: "Todo", id: "tasks" }],
+        invalidatesTags: (result, error, { todolistId }) => [
+          { type: "Todo", id: `tasks-${todolistId}` },
+        ],
       }
     ),
     updateTask: build.mutation<
@@ -97,7 +101,9 @@ export const todoAPI = createApi({
         method: "PUT",
         body: { ...body },
       }),
-      invalidatesTags: () => [{ type: "Todo", id: "tasks" }],
+      invalidatesTags: (result, error, { todolistId }) => [
+        { type: "Todo", id: `tasks-${todolistId}` },
+      ],
     }),
     deleteTask: build.mutation<
       APIResponseType,
@@ -107,7 +113,9 @@ export const todoAPI = createApi({
         url: `/todo-lists/${todolistId}/tasks/${taskId}`,
         method: "DELETE",
       }),
-      invalidatesTags: () => [{ type: "Todo", id: "tasks" }],
+      invalidatesTags: (result, error, { todolistId }) => [
+        { type: "Todo", id: `tasks-${todolistId}` },
+      ],
     }),
     reorderTask: build.mutation<APIResponseType, IReorderTask>({
       query: ({ todolistId, taskId, putAfterItemId }) => ({

@@ -23,12 +23,12 @@ const TimeLeftLine = ({ startDate, deadline, addedDate }: ITimeLeftLine) => {
   const diffDeadAndNow = dayjsDeadline.diff(dayjsNow);
   const diffStartAndDead = dayjsDeadline.diff(dayjsStartDate);
   let percent = (diffDeadAndNow / diffStartAndDead) * 100;
-  if (percent < 0) percent = 0;
-  if (dayjsStartDate > dayjsNow) percent = 100;
+  if (percent > 100) percent = 100;
+  else if (percent < 0 || isNaN(percent)) percent = 0;
   const pickColor = (percent: number) => {
     if (percent < 30) return "#FC6565";
     else if (percent < 80) return "#FCC865";
-    else return "#6FCAA9";
+    else if (percent > 80) return "#6FCAA9";
   };
 
   return (
