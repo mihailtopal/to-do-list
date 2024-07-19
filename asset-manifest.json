@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/to-do-list/static/css/main.7885385c.css",
-    "main.js": "/to-do-list/static/js/main.427cec60.js",
+    "main.css": "/to-do-list/static/css/main.3c004d32.css",
+    "main.js": "/to-do-list/static/js/main.e8ad6501.js",
     "static/js/453.a50becb7.chunk.js": "/to-do-list/static/js/453.a50becb7.chunk.js",
     "static/media/primeicons.svg": "/to-do-list/static/media/primeicons.6ed59f962963a4a73af2.svg",
     "static/media/primeicons.eot": "/to-do-list/static/media/primeicons.ff0c4cd79b2ffca2de54.eot",
@@ -11,12 +11,12 @@
     "static/media/Rally_Logo.svg": "/to-do-list/static/media/Rally_Logo.31afa804d4e9b0b0837836e55f016f6d.svg",
     "index.html": "/to-do-list/index.html",
     "static/media/logoUser.svg": "/to-do-list/static/media/logoUser.8ffc617a37a6f5fc2d7d55335863232c.svg",
-    "main.7885385c.css.map": "/to-do-list/static/css/main.7885385c.css.map",
-    "main.427cec60.js.map": "/to-do-list/static/js/main.427cec60.js.map",
+    "main.3c004d32.css.map": "/to-do-list/static/css/main.3c004d32.css.map",
+    "main.e8ad6501.js.map": "/to-do-list/static/js/main.e8ad6501.js.map",
     "453.a50becb7.chunk.js.map": "/to-do-list/static/js/453.a50becb7.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7885385c.css",
-    "static/js/main.427cec60.js"
+    "static/css/main.3c004d32.css",
+    "static/js/main.e8ad6501.js"
   ]
 }
