@@ -1,7 +1,7 @@
 import { Checkbox } from "primereact/checkbox";
 import { ITaskItem, IUpdateTask } from "../../../api/todoAPI";
 import { useState } from "react";
-import style from "../styles.module.scss";
+import style from "../../styles.module.scss";
 import { ConfirmDialog } from "primereact/confirmdialog";
 import EditTask, { Values } from "./EditTask";
 import DropdownButton from "../../common/DropdownButton";

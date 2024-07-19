@@ -1,4 +1,4 @@
-import style from "../styles.module.scss";
+import style from "../../styles.module.scss";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";

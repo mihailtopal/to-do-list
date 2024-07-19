@@ -1,6 +1,6 @@
 import { Button } from "primereact/button";
 import { ConfirmDialog } from "primereact/confirmdialog";
-import style from "../styles.module.scss";
+import style from "../../styles.module.scss";
 import { FormEvent } from "react";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";

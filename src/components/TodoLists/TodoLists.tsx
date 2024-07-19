@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useGetAllTodoListsQuery } from "../../api/todoAPI";
 import { Navigate } from "react-router-dom";
 import { authSelectors } from "../../redux/selectors/authSelectors";
-import TodoList from "./TodoList";
-import style from "./styles.module.scss";
-import Header from "./Header";
+import TodoList from "./TodoList/TodoList";
+import style from ".././styles.module.scss";
+import Header from "../Header/Header";
 
 const TodoLists = React.memo(() => {
   const isAuth = authSelectors.GetIsAuth();

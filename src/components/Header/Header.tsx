@@ -1,7 +1,6 @@
 import { InputText } from "primereact/inputtext";
-import style from "./styles.module.scss";
+import style from "../styles.module.scss";
 import { Button } from "primereact/button";
-import { ChangeEvent, useState } from "react";
 import { useSetNewTodoMutation } from "../../api/todoAPI";
 import logo from "../../assets/Rally_Logo.svg";
 import logoUser from "../../assets/logoUser.svg";

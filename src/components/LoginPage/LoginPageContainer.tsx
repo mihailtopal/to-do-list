@@ -8,7 +8,7 @@ import {
   ErrorMessage,
 } from "formik";
 import { authSelectors } from "../../redux/selectors/authSelectors";
-import style from "../TodoLists/styles.module.scss";
+import style from "../styles.module.scss";
 import { Button } from "primereact/button";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
