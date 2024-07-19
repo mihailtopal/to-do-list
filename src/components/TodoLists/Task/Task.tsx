@@ -12,6 +12,9 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import TaskInfo from "./TaskInfo";
 import TimeLeftLine from "./TimeLeftLine";
 import Timer from "./Timer";
+import dots3x3 from "../../../assets/dots3x3.svg";
+import { DragControls, Reorder, useDragControls } from "framer-motion";
+import { classNames } from "primereact/utils";
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -19,6 +22,8 @@ dayjs.extend(relativeTime);
 interface ITaskProps extends ITaskItem {
   deleteTaskHandler: (todolistId: string, taskId: string) => void;
   updateTask: ({ todolistId, taskId, body }: IUpdateTask) => void;
+  task: ITaskItem;
+  reorder: () => void;
 }
 const Task = (props: ITaskProps) => {
   const [visibleDelete, setVisibleDelete] = useState<boolean>(false);
@@ -27,7 +32,7 @@ const Task = (props: ITaskProps) => {
   const [checked, setCheked] = useState<boolean | undefined>(
     props.status === 0 ? false : true
   );
-
+  const controls = useDragControls();
   const items = [
     {
       name: "Info",
@@ -81,79 +86,114 @@ const Task = (props: ITaskProps) => {
     });
   };
   return (
-    <div className={style.task}>
-      <div className={style.taskCheked}>
-        <Checkbox
-          onChange={(e) => updateTaskStatus(e.checked)}
-          checked={checked !== undefined ? checked : false}
-        ></Checkbox>
-        <ConfirmDialog
-          visible={visibleDelete}
-          onHide={() => setVisibleDelete(false)}
-          message="Are you sure  want delete this task?"
-          accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
-        />
-        <EditTask
-          updateTask={updateTask}
-          visible={visibleEdit}
-          setVisible={setVisibleEdit}
+    <Reorder.Item
+      onDragEnd={() => props.reorder()}
+      dragControls={controls}
+      dragListener={false}
+      whileDrag={{
+        borderRadius: "4px",
+        scale: 1.08,
+        boxShadow: "0px 0px 10px 5px rgba(0, 0, 0, 0.15)",
+      }}
+      value={props.task}
+      key={props.task.id}
+      style={{
+        listStyleType: "none",
+        padding: "0",
+        marginBlockStart: "0",
+      }}
+    >
+      <ConfirmDialog
+        visible={visibleDelete}
+        onHide={() => setVisibleDelete(false)}
+        message="Are you sure  want delete this task?"
+        accept={() => props.deleteTaskHandler(props.todoListId, props.id)}
+      />
+      <EditTask
+        updateTask={updateTask}
+        visible={visibleEdit}
+        setVisible={setVisibleEdit}
+        description={props.description}
+        title={props.title}
+        startDate={props.startDate}
+        deadline={props.deadline}
+      />
+
+      <Dialog
+        header={props.title}
+        visible={visibleInfo}
+        style={{ width: "360px", maxWidth: "375px", borderRadius: "10px" }}
+        onHide={() => {
+          if (!visibleInfo) return;
+          setVisibleInfo(false);
+        }}
+      >
+        <TaskInfo
+          status={props.status}
           description={props.description}
-          title={props.title}
-          startDate={props.startDate}
           deadline={props.deadline}
+          addedDate={props.addedDate}
+          startDate={props.startDate}
+          setVisibleEdit={setVisibleEdit}
         />
-
-        <Dialog
-          header={props.title}
-          visible={visibleInfo}
-          style={{ width: "360px", maxWidth: "375px", borderRadius: "10px" }}
-          onHide={() => {
-            if (!visibleInfo) return;
-            setVisibleInfo(false);
-          }}
-        >
-          <TaskInfo
-            status={props.status}
-            description={props.description}
-            deadline={props.deadline}
-            addedDate={props.addedDate}
-            startDate={props.startDate}
-            setVisibleEdit={setVisibleEdit}
-          />
-        </Dialog>
+      </Dialog>
+      <div className={style.task} onClick={() => setVisibleInfo(true)}>
         <div
-          className={
-            style.taskTitle + " " + (checked ? style.taskChekedTrue : "")
-          }
+          draggable="false"
+          onPointerDown={(e) => controls.start(e)}
+          onClick={(e) => e.stopPropagation()}
         >
-          <div
-            style={{ paddingRight: "20px" }}
-            onClick={() => setVisibleInfo(true)}
-          >
-            {props.title}
-          </div>
+          <span
+            draggable="false"
+            className={classNames(style.grabDots, "pi", "pi-ellipsis-h")}
+          ></span>
+          {/* <img
+            draggable="false"
+            
+            src={dots3x3}
+            alt="dots3x3"
+          /> */}
 
-          <div>
-            <DropdownButton
+          {/* <DropdownButton
               className={style.taskMenu}
               headIconsize="16px"
               itemsArray={items}
               headIcon={"pi-ellipsis-v"}
-            />
+            /> */}
+        </div>
+        <div className={style.taskCheked}>
+          <Checkbox
+            onClick={(e) => e.stopPropagation()}
+            onChange={(e) => updateTaskStatus(e.checked)}
+            checked={checked !== undefined ? checked : false}
+          ></Checkbox>
+
+          <div
+            className={classNames(style.taskTitle, {
+              [style.taskChekedTrue]: checked,
+            })}
+          >
+            <div style={{ paddingRight: "20px" }}>{props.title}</div>
+            <span
+              onClick={(e) => {
+                e.stopPropagation();
+                setVisibleDelete(true);
+              }}
+              className={classNames(style.deleteTaskButton, "pi", "pi-trash")}
+            ></span>
           </div>
         </div>
-      </div>
-      {checked || (
-        <>
-          <Timer deadline={props.deadline} />
-          <TimeLeftLine
-            deadline={props.deadline}
-            startDate={props.startDate}
-            addedDate={props.addedDate}
-          />
-        </>
-      )}
-      {/* <div> description={props.description}</div>
+        {checked || (
+          <>
+            <Timer deadline={props.deadline} />
+            <TimeLeftLine
+              deadline={props.deadline}
+              startDate={props.startDate}
+              addedDate={props.addedDate}
+            />
+          </>
+        )}
+        {/* <div> description={props.description}</div>
       <div> todoListId={props.todoListId}</div>
       <div>order={props.order}</div>
       <div> status={props.status}</div>
@@ -162,7 +202,8 @@ const Task = (props: ITaskProps) => {
       <div>deadline={props.deadline}</div>
       <div> addedDate={props.addedDate.toString()}</div>
       <div>completed={props.completed}</div> */}
-    </div>
+      </div>
+    </Reorder.Item>
   );
 };
 export default Task;

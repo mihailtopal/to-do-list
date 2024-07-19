@@ -4,12 +4,34 @@ import { ErrorMessage, FormikErrors, FormikProvider, useFormik } from "formik";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import { useSetNewTaskMutation } from "../../../api/todoAPI";
+import { MutableRefObject, useRef } from "react";
 interface TodoListSetNewTaskProps {
   listId: string;
 }
 
 const TodoListSetNewTask = ({ listId }: TodoListSetNewTaskProps) => {
   const [setNewTask] = useSetNewTaskMutation();
+
+  const containerRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      formik.resetForm();
+      formik.setErrors({});
+    }
+
+    removeEventListener();
+  };
+  const addEventListener = () => {
+    document.addEventListener("mousedown", handleClickOutside);
+  };
+
+  const removeEventListener = () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+
   const validate = (values: { newTaskTitle: string }) => {
     const errors: FormikErrors<{ newTaskTitle: string }> = {};
 
@@ -33,12 +55,15 @@ const TodoListSetNewTask = ({ listId }: TodoListSetNewTaskProps) => {
   });
   return (
     <FormikProvider value={formik}>
-      <div className={style.newTaskTitleInput}>
+      <div ref={containerRef} className={style.newTaskTitleInput}>
         <IconField>
           <InputIcon
             type="submit"
             className="pi pi-plus"
-            onClick={() => formik.handleSubmit()}
+            onClick={() => {
+              addEventListener();
+              formik.handleSubmit();
+            }}
           ></InputIcon>
           <InputText
             id="newTaskTitle"
@@ -49,6 +74,7 @@ const TodoListSetNewTask = ({ listId }: TodoListSetNewTaskProps) => {
             placeholder="New task"
             className={formik.errors.newTaskTitle ? style.errorBorder : ""}
             onChange={formik.handleChange}
+            onClick={() => addEventListener()}
           />
         </IconField>
         <ErrorMessage

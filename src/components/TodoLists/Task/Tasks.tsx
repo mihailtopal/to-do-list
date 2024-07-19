@@ -15,6 +15,7 @@ const Tasks = React.memo(({ listId }: { listId: string }) => {
   const [updateTask] = useUpdateTaskMutation();
   const [reorderTask] = useReorderTaskMutation();
   const [tasks, setTasks] = useState(tasksFromAPI?.items);
+
   const deleteTaskHandler = (todolistId: string, taskId: string) => {
     deleteTask({ todolistId: todolistId, taskId: taskId });
   };
@@ -33,6 +34,7 @@ const Tasks = React.memo(({ listId }: { listId: string }) => {
       putAfterItemId: beforeTaskId,
     });
   };
+
   console.log("RErender tasks", listId);
   return (
     <Reorder.Group
@@ -42,19 +44,11 @@ const Tasks = React.memo(({ listId }: { listId: string }) => {
         paddingInlineStart: "0",
       }}
     >
-      {tasks?.map((task, index, array) => (
-        <Reorder.Item
-          onDragEnd={() => reorder(task, array[index - 1])}
-          whileDrag={{
-            borderRadius: "4px",
-            scale: 1.08,
-            boxShadow: "0px 0px 10px 5px rgba(0, 0, 0, 0.15)",
-          }}
-          value={task}
-          key={task.id}
-          style={{ listStyleType: "none", padding: "0", marginBlockStart: "0" }}
-        >
+      {tasks?.map((task, index, array) => {
+        return (
           <Task
+            reorder={() => reorder(task, array[index - 1])}
+            task={task}
             key={task.id}
             id={task.id}
             title={task.title}
@@ -70,8 +64,8 @@ const Tasks = React.memo(({ listId }: { listId: string }) => {
             deleteTaskHandler={deleteTaskHandler}
             updateTask={updateTask}
           />
-        </Reorder.Item>
-      ))}
+        );
+      })}
     </Reorder.Group>
   );
 });

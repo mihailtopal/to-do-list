@@ -29,7 +29,7 @@ const Timer = ({ deadline }: ITimerProps) => {
   }, []);
   let timeItem;
   if (differenceDuration.days() > 0)
-    timeItem = differenceDuration.days() + " days";
+    timeItem = Math.floor(differenceDuration.asDays()) + " days";
   else if (differenceDuration.hours() > 0)
     timeItem = differenceDuration.hours() + " hours";
   else if (differenceDuration.minutes() > 0)

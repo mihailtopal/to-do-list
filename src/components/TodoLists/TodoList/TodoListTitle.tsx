@@ -1,4 +1,4 @@
-import { MutableRefObject, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import style from "../.././styles.module.scss";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
@@ -12,6 +12,7 @@ import {
 import { ConfirmDialog } from "primereact/confirmdialog";
 import { Dialog } from "primereact/dialog";
 import FormattedDate from "../../common/FormattedDate";
+import { classNames } from "primereact/utils";
 
 interface ITodoListTitleProps {
   title: string;
@@ -31,6 +32,9 @@ const TodoListTitle = ({ title, listId, addedDate }: ITodoListTitleProps) => {
       containerRef.current &&
       !containerRef.current.contains(event.target as Node)
     ) {
+      if (formik.errors.title) {
+        formik.setErrors({});
+      }
       formik.resetForm();
       setTimeout(() => {
         setVisibleEdit(false);
@@ -56,9 +60,9 @@ const TodoListTitle = ({ title, listId, addedDate }: ITodoListTitleProps) => {
         title,
         todolistId: listId,
       });
+      resetForm();
       setVisibleEdit(false);
       setSubmitting(false);
-      resetForm();
     },
   });
 
@@ -90,6 +94,9 @@ const TodoListTitle = ({ title, listId, addedDate }: ITodoListTitleProps) => {
   const removeEventListener = () => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
+  useEffect(() => {
+    formik.initialValues.title = title;
+  }, [formik.initialValues, title]);
 
   return (
     <FormikProvider value={formik}>
@@ -148,6 +155,7 @@ const TodoListTitle = ({ title, listId, addedDate }: ITodoListTitleProps) => {
                 onChange={formik.handleChange}
                 className={formik.errors.title ? style.errorBorder : ""}
                 autoFocus={true}
+                onKeyDown={(e) => e.code === "Enter" && formik.handleSubmit()}
               />
             </IconField>
           ) : (
@@ -156,12 +164,10 @@ const TodoListTitle = ({ title, listId, addedDate }: ITodoListTitleProps) => {
           <ErrorMessage className={style.error} name="title" component="span" />
         </div>
         {visibleEdit || (
-          <DropdownButton
-            headIconsize="16px"
-            itemsArray={items}
-            headIcon="pi-ellipsis-v"
-            className={style.listMenu}
-          />
+          <span
+            onClick={() => setVisibleDelete(true)}
+            className={classNames(style.deleteListButton, "pi", "pi-trash")}
+          ></span>
         )}
       </div>
     </FormikProvider>
