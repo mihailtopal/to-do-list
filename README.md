@@ -4,8 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Login information for the test account:
 
-Email: free@samuraijs.com
-Password: free
+### Email: free@samuraijs.com
+### Password: free
 
 ## Available Scripts
 
